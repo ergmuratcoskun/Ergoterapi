@@ -151,9 +151,35 @@
             border: 3px solid white;
             box-shadow: 0 0 0 3px #2D5A4A;
         }
+
+        /* Visitor Counter */
+        .visitor-counter {
+            position: fixed;
+            bottom: 6px;
+            left: 6px;
+            background: rgba(45, 90, 74, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 50;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+        .visitor-counter i {
+            margin-right: 8px;
+        }
     </style>
+<base target="_blank">
 </head>
 <body class="font-sans bg-sand text-gray-800 overflow-x-hidden">
+
+    <!-- Visitor Counter - Sol Alt Köşe -->
+    <div class="visitor-counter">
+        <i class="fas fa-eye"></i>
+        <span id="visitorCount">0</span> ziyaretçi
+    </div>
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
@@ -1314,7 +1340,7 @@
                 <div>
                     <h4 class="font-bold text-lg mb-4">İletişim</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><i class="fas fa-envelope mr-2"></i> info@ergoterapi-tr.org</li>
+                        <li><i class="fas fa-envelope mr-2"></i> muratcoskun06@gmail.com</li>
                         <li>
                             <a href="https://wa.me/905067223289" target="_blank" class="flex items-center hover:text-whatsapp transition-colors">
                                 <i class="fab fa-whatsapp mr-2"></i> 0506 722 32 89
@@ -1483,6 +1509,27 @@
                 navbar.classList.remove('shadow-lg');
             }
         });
+
+        // Visitor Counter - LocalStorage ile ziyaretçi sayacı
+        (function() {
+            const counterKey = 'visitorCount';
+            const lastVisitKey = 'lastVisit';
+            const today = new Date().toDateString();
+            const lastVisit = localStorage.getItem(lastVisitKey);
+            
+            // Sayacı al veya başlat
+            let count = parseInt(localStorage.getItem(counterKey)) || 0;
+            
+            // Bugün ilk ziyaretse sayacı artır
+            if (lastVisit !== today) {
+                count++;
+                localStorage.setItem(counterKey, count);
+                localStorage.setItem(lastVisitKey, today);
+            }
+            
+            // Göster
+            document.getElementById('visitorCount').textContent = count.toLocaleString('tr-TR');
+        })();
     </script>
 </body>
 </html>
