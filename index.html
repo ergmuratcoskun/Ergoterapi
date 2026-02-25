@@ -19,13 +19,20 @@
                         'therapy-green': '#2D5A4A',
                         'therapy-light': '#E8F5E9',
                         'therapy-accent': '#FF6B6B',
+                        'therapy-dark': '#1B4332',
                         'sand': '#F5F1E8',
                         'whatsapp': '#25D366',
+                        'neuro': '#3B82F6',
+                        'pediatric': '#F59E0B',
+                        'mental': '#8B5CF6',
+                        'ortho': '#EC4899',
+                        'geri': '#10B981',
                     },
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
                         'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-in': 'slideIn 0.6s ease-out forwards',
                     },
                     keyframes: {
                         float: {
@@ -35,6 +42,10 @@
                         fadeInUp: {
                             '0%': { opacity: '0', transform: 'translateY(30px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideIn: {
+                            '0%': { opacity: '0', transform: 'translateX(-20px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
                         }
                     }
                 }
@@ -66,6 +77,43 @@
         .therapy-card:hover {
             transform: translateY(-10px) rotate(1deg);
         }
+        .disease-card {
+            transition: all 0.3s ease;
+        }
+        .disease-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .assessment-item {
+            position: relative;
+            padding-left: 30px;
+        }
+        .assessment-item::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #2D5A4A;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .intervention-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 4px;
+            transition: all 0.3s ease;
+        }
+        .intervention-tag:hover {
+            transform: scale(1.05);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
         .whatsapp-btn {
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             transition: all 0.3s ease;
@@ -92,7 +140,8 @@
                     <a href="#tarihce" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Tarihçe</a>
                     <a href="#turkiye" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Türkiye'de Ergoterapi</a>
                     <a href="#nedir" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Ergoterapi Nedir?</a>
-                    <a href="#alanlar" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Uygulama Alanları</a>
+                    <a href="#alanlar" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Klinik Alanlar</a>
+                    <a href="#degerlendirme" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Değerlendirme</a>
                 </div>
                 <button class="md:hidden text-therapy-green text-2xl" onclick="toggleMenu()">
                     <i class="fas fa-bars"></i>
@@ -109,7 +158,8 @@
         <a href="#tarihce" onclick="toggleMenu()">Tarihçe</a>
         <a href="#turkiye" onclick="toggleMenu()">Türkiye'de Ergoterapi</a>
         <a href="#nedir" onclick="toggleMenu()">Ergoterapi Nedir?</a>
-        <a href="#alanlar" onclick="toggleMenu()">Uygulama Alanları</a>
+        <a href="#alanlar" onclick="toggleMenu()">Klinik Alanlar</a>
+        <a href="#degerlendirme" onclick="toggleMenu()">Değerlendirme</a>
     </div>
 
     <!-- Hero Section -->
@@ -133,11 +183,11 @@
                     Bireylerin günlük yaşam aktivitelerine katılımlarını sağlamak için terapötik aktiviteleri kullanan bilimsel ve profesyonel bir disiplin.
                 </p>
                 <div class="flex flex-wrap gap-4">
-                    <button onclick="scrollToSection('nedir')" class="px-8 py-4 bg-therapy-green text-white rounded-full font-semibold hover:bg-therapy-green/90 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
-                        Keşfet <i class="fas fa-arrow-right ml-2"></i>
+                    <button onclick="scrollToSection('alanlar')" class="px-8 py-4 bg-therapy-green text-white rounded-full font-semibold hover:bg-therapy-green/90 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        Klinik Alanları Keşfet <i class="fas fa-arrow-right ml-2"></i>
                     </button>
-                    <button onclick="scrollToSection('turkiye')" class="px-8 py-4 border-2 border-therapy-green text-therapy-green rounded-full font-semibold hover:bg-therapy-green hover:text-white transition-all">
-                        Türkiye'de Tarihçe
+                    <button onclick="scrollToSection('degerlendirme')" class="px-8 py-4 border-2 border-therapy-green text-therapy-green rounded-full font-semibold hover:bg-therapy-green hover:text-white transition-all">
+                        Değerlendirme Yöntemleri
                     </button>
                 </div>
             </div>
@@ -147,30 +197,34 @@
                 <div class="relative bg-white p-8 rounded-3xl shadow-2xl animate-float">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-4">
-                            <div class="bg-therapy-light p-6 rounded-2xl text-center">
-                                <i class="fas fa-brain text-4xl text-therapy-green mb-3"></i>
-                                <p class="font-semibold text-therapy-green">Nörolojik<br>Rehabilitasyon</p>
+                            <div class="bg-blue-50 p-6 rounded-2xl text-center border-2 border-blue-100">
+                                <i class="fas fa-brain text-4xl text-neuro mb-3"></i>
+                                <p class="font-semibold text-gray-800 text-sm">Nörolojik<br>Rehabilitasyon</p>
+                                <p class="text-xs text-gray-500 mt-1">İnme, TBI, Parkinson</p>
                             </div>
-                            <div class="bg-orange-50 p-6 rounded-2xl text-center">
-                                <i class="fas fa-child text-4xl text-orange-500 mb-3"></i>
-                                <p class="font-semibold text-orange-600">Pediatrik<br>Ergoterapi</p>
+                            <div class="bg-yellow-50 p-6 rounded-2xl text-center border-2 border-yellow-100">
+                                <i class="fas fa-child text-4xl text-pediatric mb-3"></i>
+                                <p class="font-semibold text-gray-800 text-sm">Pediatrik<br>Ergoterapi</p>
+                                <p class="text-xs text-gray-500 mt-1">Otizm, CP, DGS</p>
                             </div>
                         </div>
                         <div class="space-y-4 mt-8">
-                            <div class="bg-blue-50 p-6 rounded-2xl text-center">
-                                <i class="fas fa-hand-holding-heart text-4xl text-blue-500 mb-3"></i>
-                                <p class="font-semibold text-blue-600">Mental<br>Sağlık</p>
+                            <div class="bg-purple-50 p-6 rounded-2xl text-center border-2 border-purple-100">
+                                <i class="fas fa-hand-holding-heart text-4xl text-mental mb-3"></i>
+                                <p class="font-semibold text-gray-800 text-sm">Mental<br>Sağlık</p>
+                                <p class="text-xs text-gray-500 mt-1">Depresyon, Anksiyete</p>
                             </div>
-                            <div class="bg-purple-50 p-6 rounded-2xl text-center">
-                                <i class="fas fa-wheelchair text-4xl text-purple-500 mb-3"></i>
-                                <p class="font-semibold text-purple-600">Fiziksel<br>Rehabilitasyon</p>
+                            <div class="bg-pink-50 p-6 rounded-2xl text-center border-2 border-pink-100">
+                                <i class="fas fa-hand text-4xl text-ortho mb-3"></i>
+                                <p class="font-semibold text-gray-800 text-sm">Ortopedik<br>Rehabilitasyon</p>
+                                <p class="text-xs text-gray-500 mt-1">El cerrahisi, Amputasyon</p>
                             </div>
                         </div>
                     </div>
                     <div class="mt-6 text-center">
-                        <div class="inline-flex items-center space-x-2 bg-gray-100 px-4 py-2 rounded-full text-sm text-gray-600">
-                            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                            <span>Türkiye'de 40+ Üniversitede Eğitim</span>
+                        <div class="inline-flex items-center space-x-2 bg-therapy-green text-white px-4 py-2 rounded-full text-sm">
+                            <i class="fas fa-check-circle"></i>
+                            <span>40+ Üniversite • 5000+ Ergoterapist</span>
                         </div>
                     </div>
                 </div>
@@ -242,6 +296,1193 @@
                 <div class="text-center scroll-reveal">
                     <div class="text-4xl font-bold text-therapy-green mb-2 counter" data-target="100">0</div>
                     <p class="text-gray-600">Ülkede Uygulama</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Clinical Areas -->
+    <section id="alanlar" class="py-24 bg-sand">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-6">Klinik Uygulama Alanları</h2>
+                <div class="w-24 h-1 bg-therapy-green mx-auto rounded-full"></div>
+                <p class="text-xl text-gray-600 mt-6">Hastalıklara özel ergoterapi değerlendirme ve tedavi yaklaşımları</p>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12 scroll-reveal">
+                <button onclick="showTab('noroloji')" class="tab-btn px-6 py-3 bg-neuro text-white rounded-full font-semibold hover:opacity-90 transition-all active" data-tab="noroloji">
+                    <i class="fas fa-brain mr-2"></i>Nörolojik
+                </button>
+                <button onclick="showTab('pediatri')" class="tab-btn px-6 py-3 bg-pediatric text-white rounded-full font-semibold hover:opacity-90 transition-all" data-tab="pediatri">
+                    <i class="fas fa-child mr-2"></i>Pediatrik
+                </button>
+                <button onclick="showTab('mental')" class="tab-btn px-6 py-3 bg-mental text-white rounded-full font-semibold hover:opacity-90 transition-all" data-tab="mental">
+                    <i class="fas fa-brain mr-2"></i>Mental Sağlık
+                </button>
+                <button onclick="showTab('ortopedi')" class="tab-btn px-6 py-3 bg-ortho text-white rounded-full font-semibold hover:opacity-90 transition-all" data-tab="ortopedi">
+                    <i class="fas fa-hand mr-2"></i>Ortopedik
+                </button>
+                <button onclick="showTab('geriatri')" class="tab-btn px-6 py-3 bg-geri text-white rounded-full font-semibold hover:opacity-90 transition-all" data-tab="geriatri">
+                    <i class="fas fa-user-clock mr-2"></i>Geriatri
+                </button>
+            </div>
+
+            <!-- Nörolojik Rehabilitasyon Content -->
+            <div id="noroloji" class="tab-content active">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+                    <div class="bg-gradient-to-r from-neuro to-blue-600 p-8 text-white">
+                        <h3 class="font-serif text-3xl font-bold mb-2">Nörolojik Rehabilitasyon</h3>
+                        <p class="opacity-90">Merkezi sinir sistemi hasarlarında fonksiyonel bağımsızlığı yeniden kazanma</p>
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <!-- İnme -->
+                            <div class="disease-card bg-blue-50 p-6 rounded-2xl border-l-4 border-neuro">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-neuro rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-heart-pulse"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">İnme (Stroke)</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-neuro mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Fugl-Meyer Assessment (Motor fonksiyon)</li>
+                                            <li class="assessment-item">Barthel Index (Günlük yaşam aktiviteleri)</li>
+                                            <li class="assessment-item">MMSE / MoCA (Bilişsel durum)</li>
+                                            <li class="assessment-item">Nine-Hole Peg Test (El inceliği)</li>
+                                            <li class="assessment-item">Berg Balance Scale (Denge)</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-neuro mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Motor Relearning Program</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Constraint-Induced Movement</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Bilateral Training</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Aynalı Terapi</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Elektrikli Stimülasyon</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Robotik Rehabilitasyon</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Hemiplejik kolun fonksiyonel kullanımını artırmak için görev odaklı aktiviteler, bilişsel rehabilitasyon ve çevre düzenlemesi yapılır. Erken dönemde yatak pozisyonlandırma, geç dönemde toplumsal katılım hedeflenir.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Parkinson -->
+                            <div class="disease-card bg-blue-50 p-6 rounded-2xl border-l-4 border-neuro">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-neuro rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-person-walking"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Parkinson Hastalığı</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-neuro mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">UPDRS (Unified Parkinson's Rating Scale)</li>
+                                            <li class="assessment-item">Schwab-England Activities of Daily Living</li>
+                                            <li class="assessment-item">PDQ-39 (Yaşam kalitesi)</li>
+                                            <li class="assessment-item">Timed Up and Go Test</li>
+                                            <li class="assessment-item">Fine Motor Coordination Tests</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">LSVT BIG Programı</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Lee Silverman Voice Treatment</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Ritmik İşitsel Uyaran</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Büyük Amplitütlü Hareketler</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Bilişsel Eğitim</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Bradykinezi ve rigideyi aşmak için büyük, geniş hareketler teşvik edilir. Bilişsel yavaşlama için strateji eğitimi, donma atakları için ritmik uyaranlar kullanılır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Multiple Skleroz -->
+                            <div class="disease-card bg-blue-50 p-6 rounded-2xl border-l-4 border-neuro">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-neuro rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-nerve"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Multiple Skleroz (MS)</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-neuro mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">MSFC (Multiple Sclerosis Functional Composite)</li>
+                                            <li class="assessment-item">Fatigue Severity Scale</li>
+                                            <li class="assessment-item">Modified Ashworth Scale (Spastisite)</li>
+                                            <li class="assessment-item">COPM (Canadian Occupational Performance Measure)</li>
+                                            <li class="assessment-item">Environmental Assessment</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-neuro mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Enerji Koruma Teknikleri</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Sıcaklık Yönetimi</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Adaptif Ekipman</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Bilişsel Rehabilitasyon</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Duyu Bütünleme</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Yorgunluk yönetimi ve enerji koruma stratejileri önceliklidir. Sıcaklık duyarlılığı nedeniyle serin ortamlarda çalışma, pacing (tempo ayarlama) teknikleri öğretilir.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Travmatik Beyin Hasarı -->
+                            <div class="disease-card bg-blue-50 p-6 rounded-2xl border-l-4 border-neuro">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-neuro rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-head-side-brain"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Travmatik Beyin Hasarı (TBH)</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-neuro mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Glasgow Coma Scale (GCS)</li>
+                                            <li class="assessment-item">Ranchos Los Amigos Levels</li>
+                                            <li class="assessment-item">Galveston Orientation and Amnesia Test</li>
+                                            <li class="assessment-item">Disability Rating Scale</li>
+                                            <li class="assessment-item">Agitated Behavior Scale</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-neuro mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Bilişsel Rehabilitasyon</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Davranış Yönetimi</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Farkındalık Eğitimi</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Aşamalı Mobilizasyon</span>
+                                            <span class="intervention-tag bg-blue-100 text-blue-800">Aile Eğitimi</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Farkındalık bozuklukları, agresif davranışlar ve bilişsel defisitlerle çalışılır. Rutin yapılandırma, görsel ipuçları ve yavaş ilerleyen aktiviteler kullanılır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Genel Nörolojik Değerlendirme Araçları -->
+                        <div class="mt-8 bg-gray-50 p-6 rounded-2xl">
+                            <h4 class="font-bold text-lg text-gray-900 mb-4"><i class="fas fa-clipboard-check text-neuro mr-2"></i>Standart Nörolojik Değerlendirme Protokolü</h4>
+                            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                                <div>
+                                    <h5 class="font-semibold mb-2">Motor Değerlendirme:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Manual Muscle Test</li>
+                                        <li>• Modified Ashworth Scale</li>
+                                        <li>• Coordination Tests</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold mb-2">Bilişsel Değerlendirme:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Loewenstein OT Cognitive Assessment</li>
+                                        <li>• Rivermead Behavioral Memory Test</li>
+                                        <li>• Trail Making Test</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold mb-2">Fonksiyonel Değerlendirme:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Functional Independence Measure</li>
+                                        <li>• COPM</li>
+                                        <li>• Goal Attainment Scaling</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pediatrik Ergoterapi Content -->
+            <div id="pediatri" class="tab-content">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+                    <div class="bg-gradient-to-r from-pediatric to-orange-600 p-8 text-white">
+                        <h3 class="font-serif text-3xl font-bold mb-2">Pediatrik Ergoterapi</h3>
+                        <p class="opacity-90">Gelişimsel bozukluklarda erken müdahale ve aile merkezli terapi</p>
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <!-- Otizm Spektrum Bozukluğu -->
+                            <div class="disease-card bg-orange-50 p-6 rounded-2xl border-l-4 border-pediatric">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-pediatric rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-puzzle-piece"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Otizm Spektrum Bozukluğu (OSB)</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-pediatric mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Sensory Profile 2 (Duyu işlemleme)</li>
+                                            <li class="assessment-item">SPM (Sensory Processing Measure)</li>
+                                            <li class="assessment-item">PEP-3 (Psychoeducational Profile)</li>
+                                            <li class="assessment-item">Vineland Adaptive Behavior Scales</li>
+                                            <li class="assessment-item">PDMS-2 (Motor gelişim)</li>
+                                            <li class="assessment-item">Evaluation of Social Interaction</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-pediatric mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Sensory Integration Therapy</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">DIR/Floortime Model</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">SCERTS Model</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">TEACCH</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Social Stories</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Visual Schedules</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Duyu işlemleme farklılıkları, sosyal iletişim ve oyun becerileri önceliklidir. Görsel destekler, öngörülebilir rutinler ve ilgi alanları üzerinden sosyal beceri geliştirme yapılır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Serebral Palsi -->
+                            <div class="disease-card bg-orange-50 p-6 rounded-2xl border-l-4 border-pediatric">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-pediatric rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-baby"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Serebral Palsi (CP)</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-pediatric mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">GMFCS (Gross Motor Function)</li>
+                                            <li class="assessment-item">MACS (Manual Ability Classification)</li>
+                                            <li class="assessment-item">CFCS (Communication Function)</li>
+                                            <li class="assessment-item">Quality of Upper Extremity Skills Test</li>
+                                            <li class="assessment-item">Pediatric Evaluation of Disability Inventory</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-pediatric mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">NDT/Bobath</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Constraint-Induced Movement</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Bimanual Training</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Goal-Directed Training</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Adaptive Equipment</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Fonksiyon odaklı, aile merkezli yaklaşım. Üst ekstremite fonksiyonunu artırmak için çift elle aktiviteler, adaptif teknoloji ve pozisyonlandırma önceliklidir.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Duyu İşlemleme Bozukluğu -->
+                            <div class="disease-card bg-orange-50 p-6 rounded-2xl border-l-4 border-pediatric">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-pediatric rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-hand-sparkles"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Duyu İşlemleme Bozukluğu (DİB)</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-pediatric mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Sensory Profile 2 (Tüm yaş grupları)</li>
+                                            <li class="assessment-item">Sensory Processing Measure (SPM)</li>
+                                            <li class="assessment-item">Test of Sensory Function in Infants</li>
+                                            <li class="assessment-item">Evaluation of Sensory Processing</li>
+                                            <li class="assessment-item">Sensorimotor Performance Analysis</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-pediatric mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Ayers Sensory Integration</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Sensory Diet</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Alert Program</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Wilbarger Protocol</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Heavy Work Activities</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Çocuğun duyu sistemini düzenlemek için kişiselleştirilmiş "duyu diyeti" oluşturulur. Uyaranlara adaptasyon, kendi kendini düzenleme stratejileri ve çevre düzenlemesi yapılır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gelişimsel Gecikme -->
+                            <div class="disease-card bg-orange-50 p-6 rounded-2xl border-l-4 border-pediatric">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-pediatric rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Gelişimsel Gecikme / Koordinasyon Bozukluğu</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-pediatric mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">PDMS-2 (Peabody Motor Scales)</li>
+                                            <li class="assessment-item">Movement ABC-2</li>
+                                            <li class="assessment-item">Bruininks-Oseretsky Test</li>
+                                            <li class="assessment-item">School Function Assessment</li>
+                                            <li class="assessment-item">Play Assessment</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-pediatric mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">CO-OP Approach</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Motor Learning</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Cognitive Orientation</span>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Task-Specific Training</li>
+                                            <span class="intervention-tag bg-orange-100 text-orange-800">Play-Based Therapy</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Çocuğun kendi stratejilerini geliştirmesini destekleyen CO-OP yaklaşımı kullanılır. Oyun temelli aktivitelerle motor planlama, koordinasyon ve günlük yaşam becerileri kazandırılır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pediatrik Özel Değerlendirme -->
+                        <div class="mt-8 bg-gray-50 p-6 rounded-2xl">
+                            <h4 class="font-bold text-lg text-gray-900 mb-4"><i class="fas fa-clipboard-check text-pediatric mr-2"></i>Pediatrik Değerlendirme İlkeleri</h4>
+                            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-pediatric">Oyun Değerlendirmesi:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Revised Knox Preschool Play Scale</li>
+                                        <li>• Test of Playfulness</li>
+                                        <li>• Play History Interview</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-pediatric">Okul Değerlendirmesi:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• School Function Assessment</li>
+                                        <li>• Evaluation of Children's Handwriting</li>
+                                        <li>• Beery VMI</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-pediatric">Aile Katılımı:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Canadian Occupational Performance Measure</li>
+                                        <li>• Family Interview</li>
+                                        <li>• Environmental Assessment</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mental Sağlık Content -->
+            <div id="mental" class="tab-content">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+                    <div class="bg-gradient-to-r from-mental to-purple-700 p-8 text-white">
+                        <h3 class="font-serif text-3xl font-bold mb-2">Mental Sağlık ve Psikososyal Rehabilitasyon</h3>
+                        <p class="opacity-90">Psikiyatrik durumlarda işlevsellik ve toplumsal katılım</p>
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <!-- Depresyon -->
+                            <div class="disease-card bg-purple-50 p-6 rounded-2xl border-l-4 border-mental">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-mental rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-cloud-rain"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Depresyon ve Anksiyete Bozuklukları</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-mental mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Beck Depression Inventory (BDI)</li>
+                                            <li class="assessment-item">Beck Anxiety Inventory (BAI)</li>
+                                            <li class="assessment-item">COPM (Occupational Performance)</li>
+                                            <li class="assessment-item">Role Checklist</li>
+                                            <li class="assessment-item">Time Use Diary</li>
+                                            <li class="assessment-item">Assessment of Motor and Process Skills</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-mental mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Behavioral Activation</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Graded Task Assignment</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Mindfulness-Based OT</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Creative Activities</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Social Skills Training</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Anhedoni (zevk alamama) ile mücadelede anlamlı aktiviteler, başarı deneyimleri ve sosyal katılım hedeflenir. Günlük yapılandırma ve aktivite planlaması yapılır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Şizofreni -->
+                            <div class="disease-card bg-purple-50 p-6 rounded-2xl border-l-4 border-mental">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-mental rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Şizofreni Spektrum Bozuklukları</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-mental mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Positive and Negative Syndrome Scale</li>
+                                            <li class="assessment-item">OT Functional Assessment Scale</li>
+                                            <li class="assessment-item">Independent Living Skills Survey</li>
+                                            <li class="assessment-item">Test of Grocery Shopping Skills</li>
+                                            <li class="assessment-item">Work Personality Profile</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-mental mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Social Cognition Training</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Cognitive Remediation</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Supported Employment</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Illness Management</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Family Psychoeducation</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Negatif semptomlar ve bilişsel bozukluklar hedeflenir. Sosyal biliş eğitimi, destekli istihdam ve bağımsız yaşam becerileri kazandırılır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Yeme Bozuklukları -->
+                            <div class="disease-card bg-purple-50 p-6 rounded-2xl border-l-4 border-mental">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-mental rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-utensils"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Yeme Bozuklukları (Anoreksiya, Bulimia)</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-mental mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Eating Disorder Examination</li>
+                                            <li class="assessment-item">Body Image Assessment</li>
+                                            <li class="assessment-item">Meal Preparation Assessment</li>
+                                            <li class="assessment-item">Social Functioning Scale</li>
+                                            <li class="assessment-item">Time Management Skills</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-mental mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Body Image Therapy</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Meal Support</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Emotion Regulation</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Sensory Integration</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Expressive Therapies</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Beden algısı, duygusal düzenleme ve yeme rutinleri çalışılır. Kontrol duygusu sağlayan aktiviteler, duyu odaklı yeme deneyimleri ve aile içi iletişim hedeflenir.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Travma ve PTSD -->
+                            <div class="disease-card bg-purple-50 p-6 rounded-2xl border-l-4 border-mental">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-mental rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-heart-crack"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Travma ve PTSD</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-mental mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">PTSD Checklist (PCL-5)</li>
+                                            <li class="assessment-item">Trauma History Interview</li>
+                                            <li class="assessment-item">Occupational Performance History</li>
+                                            <li class="assessment-item">Sleep Hygiene Assessment</li>
+                                            <li class="assessment-item">Grounding Techniques Evaluation</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-mental mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Trauma-Informed Care</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Grounding Techniques</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Sensorimotor Psychotherapy</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Expressive Arts</span>
+                                            <span class="intervention-tag bg-purple-100 text-purple-800">Daily Routine Restructuring</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Güvenli ortam oluşturma, beden farkındalığı ve duyu temelli yatıştırma teknikleri önceliklidir. Travma hikayesine saygılı, bireyin kontrolünde ilerleyen bir yaklaşım benimsenir.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mental Sağlık Özel -->
+                        <div class="mt-8 bg-gray-50 p-6 rounded-2xl">
+                            <h4 class="font-bold text-lg text-gray-900 mb-4"><i class="fas fa-clipboard-check text-mental mr-2"></i>Psikososyal Değerlendirme Çerçevesi</h4>
+                            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-mental">İşlevsel Değerlendirme:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Assessment of Motor and Process Skills</li>
+                                        <li>• Kohlman Evaluation of Living Skills</li>
+                                        <li>• Safety Assessment</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-mental">Bilişsel Değerlendirme:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Allen Cognitive Level Screen</li>
+                                        <li>• Cognitive Assessment of Minnesota</li>
+                                        <li>• Executive Function Performance Test</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-mental">Sosyal Katılım:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Social Functioning Scale</li>
+                                        <li>• Occupational Circumstances Assessment</li>
+                                        <li>• Vocational Assessment</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ortopedik Rehabilitasyon Content -->
+            <div id="ortopedi" class="tab-content">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+                    <div class="bg-gradient-to-r from-ortho to-pink-600 p-8 text-white">
+                        <h3 class="font-serif text-3xl font-bold mb-2">Ortopedik Rehabilitasyon ve El Cerrahisi</h3>
+                        <p class="opacity-90">Üst ekstremite yaralanmalarında fonksiyon ve incelik hareketleri</p>
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <!-- El ve Bilek Yaralanmaları -->
+                            <div class="disease-card bg-pink-50 p-6 rounded-2xl border-l-4 border-ortho">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-ortho rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-hand"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">El ve Bilek Yaralanmaları (Karpal Tünel, Tendon Yaralanmaları)</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-ortho mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">DASH Questionnaire (Disabilities of Arm, Shoulder, Hand)</li>
+                                            <li class="assessment-item">Michigan Hand Outcomes Questionnaire</li>
+                                            <li class="assessment-item">Semmes-Weinstein Monofilament Test</li>
+                                            <li class="assessment-item">Dynamometer (Güç ölçümü)</li>
+                                            <li class="assessment-item">Pinch Meter (Kavrama gücü)</li>
+                                            <li class="assessment-item">9-Hole Peg Test (İncelik)</li>
+                                            <li class="assessment-item">Range of Motion (Gonyometre)</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-ortho mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Custom Splinting</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Edema Control</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Scar Management</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Tendon Gliding</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Joint Mobilization</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Desensitization</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Koruyucu atel, ödem kontrolü ve yara bakımı ile başlanır. Tendon kaydırma egzersizleri, sinir sürüşmesi ve fonksiyonel kavrama eğitimi aşamalı olarak ilerletilir.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Omuz ve Kol Yaralanmaları -->
+                            <div class="disease-card bg-pink-50 p-6 rounded-2xl border-l-4 border-ortho">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-ortho rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-arm-muscle"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Omuz ve Kol Yaralanmaları (Rotator Manşet, Fraktürler)</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-ortho mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Constant-Murley Shoulder Score</li>
+                                            <li class="assessment-item">Simple Shoulder Test</li>
+                                            <li class="assessment-item">UCLA Shoulder Rating Scale</li>
+                                            <li class="assessment-item">Goniometric ROM Assessment</li>
+                                            <li class="assessment-item">Manual Muscle Testing</li>
+                                            <li class="assessment-item">Functional Reach Test</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-ortho mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Shoulder Protocol</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Pendulum Exercises</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Joint Mobilization</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Strengthening</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Proprioception Training</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Koruma fazından başlayarak ağrısız ROM, propriosepsiyon ve fonksiyonel güçlendirme hedeflenir. Günlük yaşam aktivitelerine dönüş için ergonomik düzenlemeler yapılır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Amputasyon -->
+                            <div class="disease-card bg-pink-50 p-6 rounded-2xl border-l-4 border-ortho">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-ortho rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-wheelchair"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Üst Ekstremite Amputasyonu</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-ortho mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Amputee Mobility Predictor</li>
+                                            <li class="assessment-item">Prosthetic Evaluation Questionnaire</li>
+                                            <li class="assessment-item">Upper Extremity Functional Scale</li>
+                                            <li class="assessment-item">Residual Limb Assessment</li>
+                                            <li class="assessment-item">Phantom Limb Pain Scale</li>
+                                            <li class="assessment-item">Bimanual Activities Assessment</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-ortho mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Pre-prosthetic Training</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Desensitization</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Mirror Therapy</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Prosthetic Training</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">ADL Adaptation</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Body Image Therapy</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Amputasyon öncesi eğitim, duyu uyarımı ve aynalı terapi ile başlar. Protez kullanımı, tek elle aktiviteler ve adaptif ekipman ile bağımsızlık sağlanır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Kronik Ağrı -->
+                            <div class="disease-card bg-pink-50 p-6 rounded-2xl border-l-4 border-ortho">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-ortho rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-fire-flame-curved"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Kronik Ağrı (Kompakt Sendromu, Fibromiyalji)</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-ortho mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Visual Analog Scale (VAS)</li>
+                                            <li class="assessment-item">McGill Pain Questionnaire</li>
+                                            <li class="assessment-item">Pain Catastrophizing Scale</li>
+                                            <li class="assessment-item">Fear-Avoidance Beliefs Questionnaire</li>
+                                            <li class="assessment-item">Pain Disability Index</li>
+                                            <li class="assessment-item">Activity Pacing Assessment</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-ortho mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Graded Exposure</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Activity Pacing</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Pain Neuroscience Education</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Relaxation Techniques</span>
+                                            <span class="intervention-tag bg-pink-100 text-pink-800">Ergonomic Modifications</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Ağrı korkusunu yenmek için dereceli maruz bırakma, aktivite tempo ayarlama ve ağrı nörobilimi eğitimi uygulanır. Fonksiyonel hedefler ağrı odaklı değil, aktivite odaklı belirlenir.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ortopedik Özel -->
+                        <div class="mt-8 bg-gray-50 p-6 rounded-2xl">
+                            <h4 class="font-bold text-lg text-gray-900 mb-4"><i class="fas fa-clipboard-check text-ortho mr-2"></i>El ve Üst Ekstremite Değerlendirme Protokolü</h4>
+                            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-ortho">Fonksiyonel Değerlendirme:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Jebsen Hand Function Test</li>
+                                        <li>• Minnesota Rate of Manipulation</li>
+                                        <li>• Box and Block Test</li>
+                                        <li>• Purdue Pegboard</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-ortho">Duyu Değerlendirmesi:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Two-Point Discrimination</li>
+                                        <li>• Stereognosis Testing</li>
+                                        <li>• Vibration Testing</li>
+                                        <li>• Temperature Perception</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-ortho">İş Değerlendirmesi:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Valpar Component Work Samples</li>
+                                        <li>• Functional Capacity Evaluation</li>
+                                        <li>• Work Simulation</li>
+                                        <li>• Ergonomic Analysis</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Geriatri Content -->
+            <div id="geriatri" class="tab-content">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+                    <div class="bg-gradient-to-r from-geri to-emerald-600 p-8 text-white">
+                        <h3 class="font-serif text-3xl font-bold mb-2">Geriatrik Ergoterapi</h3>
+                        <p class="opacity-90">Yaşlanma ile birlikte gelen fonksiyonel değişimler ve demans yönetimi</p>
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <!-- Alzheimer ve Demans -->
+                            <div class="disease-card bg-emerald-50 p-6 rounded-2xl border-l-4 border-geri">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-geri rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Alzheimer Hastalığı ve Demans</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-geri mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Mini-Mental State Examination (MMSE)</li>
+                                            <li class="assessment-item">Montreal Cognitive Assessment (MoCA)</li>
+                                            <li class="assessment-item">Allen Cognitive Level Screen</li>
+                                            <li class="assessment-item">Global Deterioration Scale</li>
+                                            <li class="assessment-item">Functional Assessment Staging</li>
+                                            <li class="assessment-item">Quality of Life in Alzheimer's Disease</li>
+                                            <li class="assessment-item">Caregiver Burden Scale</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-geri mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Reality Orientation</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Validation Therapy</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Reminiscence Therapy</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Montessori-Based Activities</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Environmental Adaptation</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Caregiver Education</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Bilişsel evreye uygun aktiviteler, kalıcı yeteneklere odaklanma ve çevre düzenlemesi esastır. Bireyin geri kalan yeteneklerini kullanarak başarı deneyimi yaşatılır, bakıcı yükü azaltılır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Düşme Riski -->
+                            <div class="disease-card bg-emerald-50 p-6 rounded-2xl border-l-4 border-geri">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-geri rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-person-falling"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Düşme Riski ve Denge Bozuklukları</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-geri mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Berg Balance Scale</li>
+                                            <li class="assessment-item">Timed Up and Go Test</li>
+                                            <li class="assessment-item">Tinetti Performance Oriented Mobility</li>
+                                            <li class="assessment-item">Functional Reach Test</li>
+                                            <li class="assessment-item">Falls Efficacy Scale</li>
+                                            <li class="assessment-item">Home Falls and Accidents Screening</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-geri mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Balance Training</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Home Safety Assessment</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Environmental Modifications</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Assistive Device Training</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Fear of Falling Management</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Düşme korkusu ve denge eğitimi birlikte yürütülür. Ev güvenlik denetimi, aydınlatma, kaygan zemin düzenlemeleri ve uygun yardımcı cihazlar sağlanır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Artrit ve Osteoporoz -->
+                            <div class="disease-card bg-emerald-50 p-6 rounded-2xl border-l-4 border-geri">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-geri rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-bone"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Osteoartrit, Romatoid Artrit ve Osteoporoz</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-geri mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">DASH / MHQ (Hand assessment)</li>
+                                            <li class="assessment-item">Arthritis Impact Measurement Scale</li>
+                                            <li class="assessment-item">Health Assessment Questionnaire</li>
+                                            <li class="assessment-item">Joint Protection Assessment</li>
+                                            <li class="assessment-item">Fatigue Severity Scale</li>
+                                            <li class="assessment-item">Osteoporosis Risk Assessment</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-geri mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Joint Protection</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Energy Conservation</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Adaptive Equipment</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Splinting</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Therapeutic Exercise</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Weight Bearing Activities</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Eklem koruma prensipleri, enerji koruma teknikleri ve ağrı yönetimi önceliklidir. Osteoporozda düşme önleme ve güvenli vücut mekaniği eğitimi yapılır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Yaşlılık ve Günlük Yaşam -->
+                            <div class="disease-card bg-emerald-50 p-6 rounded-2xl border-l-4 border-geri">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-geri rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-house-user"></i>
+                                    </div>
+                                    <h4 class="font-bold text-xl text-gray-900">Bağımsız Yaşam ve İç Mekan Mobilite</h4>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="font-semibold text-geri mb-2">Ergoterapi Değerlendirmesi:</h5>
+                                        <ul class="space-y-1 text-gray-700 text-sm">
+                                            <li class="assessment-item">Barthel Index</li>
+                                            <li class="assessment-item">Katz Index of Independence</li>
+                                            <li class="assessment-item">Lawton IADL Scale</li>
+                                            <li class="assessment-item">Kohlman Evaluation of Living Skills</li>
+                                            <li class="assessment-item">Safety Assessment of Function</li>
+                                            <li class="assessment-item">Driving Assessment (Sürücü değerlendirme)</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-semibold text-geri mb-2">Tedavi Yaklaşımları:</h5>
+                                        <div class="flex flex-wrap">
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">ADL Retraining</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Compensatory Techniques</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Home Modifications</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Assistive Technology</span>
+                                            <span class="intervention-tag bg-emerald-100 text-emerald-800">Transfer Training</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg mt-4">
+                                        <p class="text-sm text-gray-600 italic">
+                                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                            <strong>Bakış Açısı:</strong> Yaşlı bireyin kendi evinde bağımsız kalması için telafi edici stratejiler, ev düzenlemesi ve teknoloji kullanımı öğretilir. Transfer teknikleri ve güvenlik protokolleri eğitimi verilir.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Geriatrik Özel -->
+                        <div class="mt-8 bg-gray-50 p-6 rounded-2xl">
+                            <h4 class="font-bold text-lg text-gray-900 mb-4"><i class="fas fa-clipboard-check text-geri mr-2"></i>Geriatrik Değerlendirme Bataryası</h4>
+                            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-geri">Bilişsel Tarama:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Saint Louis University Mental Status</li>
+                                        <li>• Clock Drawing Test</li>
+                                        <li>• Trail Making Test A/B</li>
+                                        <li>• Category Fluency Test</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-geri">Fonksiyonel Mobilite:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• 6-Minute Walk Test</li>
+                                        <li>• Short Physical Performance Battery</li>
+                                        <li>• Sit-to-Stand Test</li>
+                                        <li>• Gait Speed Assessment</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2 text-geri">Sosyal Katılım:</h5>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li>• Lubben Social Network Scale</li>
+                                        <li>• Life Space Assessment</li>
+                                        <li>• Participation Measure</li>
+                                        <li>• Caregiver Strain Index</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Assessment Framework Section -->
+    <section id="degerlendirme" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-6">Ergoterapi Değerlendirme Çerçevesi</h2>
+                <div class="w-24 h-1 bg-therapy-green mx-auto rounded-full"></div>
+                <p class="text-xl text-gray-600 mt-6">Kapsamlı değerlendirme süreci ve kullanılan standart ölçekler</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Adım 1 -->
+                <div class="bg-therapy-light p-6 rounded-2xl scroll-reveal">
+                    <div class="w-12 h-12 bg-therapy-green text-white rounded-full flex items-center justify-center font-bold text-xl mb-4">1</div>
+                    <h3 class="font-bold text-lg text-gray-900 mb-3">Hikaye Alma ve Görüşme</h3>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li>• Canadian Occupational Performance Measure (COPM)</li>
+                        <li>• Occupational History Interview</li>
+                        <li>• Interest Checklist</li>
+                        <li>• Role Checklist</li>
+                        <li>• Aile ve bakıcı görüşmesi</li>
+                    </ul>
+                </div>
+
+                <!-- Adım 2 -->
+                <div class="bg-blue-50 p-6 rounded-2xl scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-xl mb-4">2</div>
+                    <h3 class="font-bold text-lg text-gray-900 mb-3">Fonksiyonel Değerlendirme</h3>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li>• Barthel Index (Temel ADL)</li>
+                        <li>• Lawton IADL Scale</li>
+                        <li>• Functional Independence Measure (FIM)</li>
+                        <li>• Klein-Bell Activities of Daily Living</li>
+                        <li>• Assessment of Motor and Process Skills</li>
+                    </ul>
+                </div>
+
+                <!-- Adım 3 -->
+                <div class="bg-orange-50 p-6 rounded-2xl scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-xl mb-4">3</div>
+                    <h3 class="font-bold text-lg text-gray-900 mb-3">Bileşen Değerlendirmesi</h3>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li>• Range of Motion (Goniometre)</li>
+                        <li>• Manual Muscle Testing</li>
+                        <li>• Sensory Testing (Monofilament, 2-point)</li>
+                        <li>• Cognitive Assessments (Allen, SLUMS)</li>
+                        <li>• Perception Tests (Motor-free)</li>
+                    </ul>
+                </div>
+
+                <!-- Adım 4 -->
+                <div class="bg-purple-50 p-6 rounded-2xl scroll-reveal" style="transition-delay: 0.3s;">
+                    <div class="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-xl mb-4">4</div>
+                    <h3 class="font-bold text-lg text-gray-900 mb-3">Çevre ve Bağlam</h3>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li>• Home Assessment</li>
+                        <li>• Work/Job Site Analysis</li>
+                        <li>• School Function Assessment</li>
+                        <li>• Environmental Assessment Tool</li>
+                        <li>• Assistive Technology Evaluation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Önemli Not -->
+            <div class="mt-12 bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-r-2xl scroll-reveal">
+                <div class="flex items-start">
+                    <i class="fas fa-exclamation-triangle text-yellow-600 text-2xl mr-4 mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-gray-900 mb-2">Ergoterapi Değerlendirme İlkeleri</h4>
+                        <p class="text-gray-700 mb-2">
+                            Ergoterapistler, bireyin <strong>günlük yaşam aktivitelerine (ADL)</strong> katılımını değerlendirirken sadece fiziksel yeteneklere değil, aynı zamanda:
+                        </p>
+                        <ul class="space-y-1 text-gray-700 text-sm">
+                            <li>• <strong>Bilişsel durum</strong> (Bellek, dikkat, problem çözme)</li>
+                            <li>• <strong>Duyusal işlemleme</strong> (Görsel, işitsel, dokunsal, vestibüler)</li>
+                            <li>• <strong>Psikososyal faktörler</strong> (Motivasyon, ruh hali, sosyal destek)</li>
+                            <li>• <strong>Çevresel bariyerler</strong> (Fiziksel, sosyal, kültürel)</li>
+                            <li>• <strong>Kişisel bağlam</strong> (Yaş, cinsiyet, yaşam tarzı, değerler)</li>
+                        </ul>
+                        <p class="text-gray-700 mt-2 text-sm">
+                            Bu bütüncül yaklaşım, standart tıbbi değerlendirmeden farklı olarak bireyin <em>yapmak istediği</em> aktivitelere odaklanır.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -450,226 +1691,13 @@
         </div>
     </section>
 
-    <!-- Application Areas -->
-    <section id="alanlar" class="py-24 bg-sand">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16 scroll-reveal">
-                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-6">Uygulama Alanları</h2>
-                <div class="w-24 h-1 bg-therapy-green mx-auto rounded-full"></div>
-                <p class="text-xl text-gray-600 mt-6">Ergoterapistlerin çalıştığı başlıca alanlar</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal">
-                    <div class="h-48 bg-gradient-to-br from-green-400 to-therapy-green flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-brain text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
-                        <i class="fas fa-brain text-5xl text-white relative z-10"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Nörolojik Rehabilitasyon</h3>
-                        <p class="text-gray-600 mb-4">İnme, beyin travması, Parkinson, MS gibi nörolojik hastalıklarda fonksiyonel bağımsızlığı artırma.</p>
-                        <ul class="text-sm text-gray-500 space-y-1">
-                            <li><i class="fas fa-check text-therapy-green mr-2"></i>İnme rehabilitasyonu</li>
-                            <li><i class="fas fa-check text-therapy-green mr-2"></i>Spina bifida</li>
-                            <li><i class="fas fa-check text-therapy-green mr-2"></i>Travmatik beyin hasarı</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 0.1s;">
-                    <div class="h-48 bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-child text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
-                        <i class="fas fa-child text-5xl text-white relative z-10"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Pediatrik Ergoterapi</h3>
-                        <p class="text-gray-600 mb-4">Gelişimsel gerilik, otizm, serebral palsi, öğrenme güçlüğü olan çocuklarda destek.</p>
-                        <ul class="text-sm text-gray-500 space-y-1">
-                            <li><i class="fas fa-check text-orange-500 mr-2"></i>Otizm spektrum bozukluğu</li>
-                            <li><i class="fas fa-check text-orange-500 mr-2"></i>Duyu bütünleme</li>
-                            <li><i class="fas fa-check text-orange-500 mr-2"></i>Gelişimsel koordinasyon</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 0.2s;">
-                    <div class="h-48 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-hand-holding-heart text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
-                        <i class="fas fa-hand-holding-heart text-5xl text-white relative z-10"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Mental Sağlık</h3>
-                        <p class="text-gray-600 mb-4">Depresyon, anksiyete, şizofreni, bağımlılık gibi psikiyatrik durumlarda tedavi.</p>
-                        <ul class="text-sm text-gray-500 space-y-1">
-                            <li><i class="fas fa-check text-blue-500 mr-2"></i>Grup terapileri</li>
-                            <li><i class="fas fa-check text-blue-500 mr-2"></i>Günlük yaşam becerileri</li>
-                            <li><i class="fas fa-check text-blue-500 mr-2"></i>İş ve meslek rehabilitasyonu</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal">
-                    <div class="h-48 bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-wheelchair text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
-                        <i class="fas fa-wheelchair text-5xl text-white relative z-10"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Ortopedik Rehabilitasyon</h3>
-                        <p class="text-gray-600 mb-4">El ve üst ekstremite yaralanmaları, amputasyon, eklem protezleri sonrası rehabilitasyon.</p>
-                        <ul class="text-sm text-gray-500 space-y-1">
-                            <li><i class="fas fa-check text-purple-500 mr-2"></i>El cerrahisi rehabilitasyonu</li>
-                            <li><i class="fas fa-check text-purple-500 mr-2"></i>Protez eğitimi</li>
-                            <li><i class="fas fa-check text-purple-500 mr-2"></i>Yanık rehabilitasyonu</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 0.1s;">
-                    <div class="h-48 bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-users text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
-                        <i class="fas fa-users text-5xl text-white relative z-10"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Geriatri</h3>
-                        <p class="text-gray-600 mb-4">Yaşlı bireylerde demans, Alzheimer, düşme riski ve günlük yaşam aktivitelerinin desteklenmesi.</p>
-                        <ul class="text-sm text-gray-500 space-y-1">
-                            <li><i class="fas fa-check text-red-500 mr-2"></i>Demans bakımı</li>
-                            <li><i class="fas fa-check text-red-500 mr-2"></i>Ev güvenliği düzenlemesi</li>
-                            <li><i class="fas fa-check text-red-500 mr-2"></i>Bakıver desteği</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 0.2s;">
-                    <div class="h-48 bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-home text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
-                        <i class="fas fa-home text-5xl text-white relative z-10"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Ortopedik Protez/Ortez</h3>
-                        <p class="text-gray-600 mb-4">Yardımcı teknolojiler, ev düzenlemesi ve erişilebilirlik danışmanlığı.</p>
-                        <ul class="text-sm text-gray-500 space-y-1">
-                            <li><i class="fas fa-check text-teal-500 mr-2"></i>Akıllı ev teknolojileri</li>
-                            <li><i class="fas fa-check text-teal-500 mr-2"></i>Erişilebilirlik düzenlemeleri</li>
-                            <li><i class="fas fa-check text-teal-500 mr-2"></i>Araç adaptasyonları</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Quote Section -->
-    <section class="py-24 bg-therapy-green text-white relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute inset-0" style="background-image: repeating-radial-gradient(circle at 0 0, transparent 0, #ffffff 11px), repeating-linear-gradient(#2D5A4A, #2D5A4A); background-size: 20px 20px;"></div>
-        </div>
-        
-        <div class="max-w-4xl mx-auto px-6 text-center relative z-10 scroll-reveal">
-            <i class="fas fa-quote-left text-6xl text-therapy-accent mb-8 opacity-50"></i>
-            <h2 class="font-serif text-3xl md:text-5xl font-bold mb-8 leading-tight">
-                "Ergoterapi, bireylerin yaşamda yapmak istedikleri şeyleri yapabilmeleri için güçlendirilmesidir."
-            </h2>
-            <p class="text-xl text-therapy-light">— Dünya Ergoterapi Federasyonu (WFOT)</p>
-            
-            <div class="mt-12 flex justify-center space-x-4">
-                <button onclick="showQuote(1)" class="w-3 h-3 rounded-full bg-white/30 hover:bg-white transition-colors quote-dot active"></button>
-                <button onclick="showQuote(2)" class="w-3 h-3 rounded-full bg-white/30 hover:bg-white transition-colors quote-dot"></button>
-                <button onclick="showQuote(3)" class="w-3 h-3 rounded-full bg-white/30 hover:bg-white transition-colors quote-dot"></button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education Section -->
-    <section class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="scroll-reveal">
-                    <h2 class="font-serif text-4xl font-bold text-gray-900 mb-6">Ergoterapist Nasıl Olunur?</h2>
-                    <div class="space-y-6">
-                        <div class="flex items-start space-x-4">
-                            <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">1</div>
-                            <div>
-                                <h4 class="font-bold text-lg text-gray-900">Lisans Eğitimi</h4>
-                                <p class="text-gray-600">4 yıllık Ergoterapi lisans programını tamamlamak (FTR Yüksekokulları veya Sağlık Bilimleri Fakülteleri).</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start space-x-4">
-                            <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">2</div>
-                            <div>
-                                <h4 class="font-bold text-lg text-gray-900">Staj ve Uygulama</h4>
-                                <p class="text-gray-600">Eğitim süresince çeşitli kliniklerde staj yapmak ve 1000+ saat uygulamalı eğitim almak.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start space-x-4">
-                            <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">3</div>
-                            <div>
-                                <h4 class="font-bold text-lg text-gray-900">Mezuniyet ve Lisans</h4>
-                                <p class="text-gray-600">Sağlık Bakanlığı'ndan ergoterapist diploması almak ve TERCED üyesi olmak.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start space-x-4">
-                            <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">4</div>
-                            <div>
-                                <h4 class="font-bold text-lg text-gray-900">Uzmanlık (İsteğe Bağlı)</h4>
-                                <p class="text-gray-600">Yüksek lisans ve doktora yaparak akademik kariyer veya klinik uzmanlık alanı seçebilirsiniz.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative scroll-reveal">
-                    <div class="absolute inset-0 bg-gradient-to-br from-therapy-accent/20 to-therapy-green/20 rounded-3xl transform rotate-3"></div>
-                    <div class="relative bg-sand p-8 rounded-3xl shadow-xl">
-                        <h3 class="font-serif text-2xl font-bold text-gray-900 mb-6">Eğitim İçeriği</h3>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-white p-4 rounded-xl shadow-sm">
-                                <i class="fas fa-book-medical text-therapy-green text-2xl mb-2"></i>
-                                <p class="font-semibold text-sm">Anatomi & Fizyoloji</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl shadow-sm">
-                                <i class="fas fa-brain text-therapy-green text-2xl mb-2"></i>
-                                <p class="font-semibold text-sm">Nöroloji</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl shadow-sm">
-                                <i class="fas fa-hands text-therapy-green text-2xl mb-2"></i>
-                                <p class="font-semibold text-sm">Kinezyoloji</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl shadow-sm">
-                                <i class="fas fa-psychology text-therapy-green text-2xl mb-2"></i>
-                                <p class="font-semibold text-sm">Psikiyatri</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl shadow-sm">
-                                <i class="fas fa-child text-therapy-green text-2xl mb-2"></i>
-                                <p class="font-semibold text-sm">Pediatri</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl shadow-sm">
-                                <i class="fas fa-user-md text-therapy-green text-2xl mb-2"></i>
-                                <p class="font-semibold text-sm">Klinik Uygulama</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- WhatsApp Contact Section -->
     <section class="py-16 bg-gradient-to-r from-whatsapp to-green-600 text-white">
         <div class="max-w-4xl mx-auto px-6 text-center">
             <div class="scroll-reveal">
                 <i class="fab fa-whatsapp text-6xl mb-4 animate-bounce"></i>
                 <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">WhatsApp'tan Ulaşın</h2>
-                <p class="text-lg mb-8 opacity-90">Ergoterapi hakkında bilgi almak veya randevu talep etmek için hemen WhatsApp üzerinden bize yazın.</p>
+                <p class="text-lg mb-8 opacity-90">Ergoterapi hakkında detaylı bilgi almak veya randevu talep etmek için hemen WhatsApp üzerinden bize yazın.</p>
                 
                 <a href="https://wa.me/905067223289?text=Merhaba,%20ergoterapi%20hakkında%20bilgi%20almak%20istiyorum." 
                    target="_blank" 
@@ -705,8 +1733,8 @@
                     <ul class="space-y-2 text-gray-400">
                         <li><a href="#tarihce" class="hover:text-therapy-green transition-colors">Tarihçe</a></li>
                         <li><a href="#turkiye" class="hover:text-therapy-green transition-colors">Türkiye'de Ergoterapi</a></li>
-                        <li><a href="#nedir" class="hover:text-therapy-green transition-colors">Ergoterapi Nedir?</a></li>
-                        <li><a href="#alanlar" class="hover:text-therapy-green transition-colors">Uygulama Alanları</a></li>
+                        <li><a href="#alanlar" class="hover:text-therapy-green transition-colors">Klinik Alanlar</a></li>
+                        <li><a href="#degerlendirme" class="hover:text-therapy-green transition-colors">Değerlendirme</a></li>
                     </ul>
                 </div>
 
@@ -776,6 +1804,28 @@
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
+        // Tab Functionality
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('ring-4', 'ring-offset-2');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active styling to button
+            event.target.classList.add('ring-4', 'ring-offset-2');
+            
+            // Scroll to tabs
+            document.getElementById('alanlar').scrollIntoView({ behavior: 'smooth' });
+        }
+
         // Navbar Scroll Effect
         window.addEventListener('scroll', () => {
             const navbar = document.getElementById('navbar');
@@ -823,58 +1873,6 @@
                 }
             }, 30);
         }
-
-        // Quote Slider
-        const quotes = [
-            "Ergoterapi, bireylerin yaşamda yapmak istedikleri şeyleri yapabilmeleri için güçlendirilmesidir.",
-            "Aktivite, ergoterapinin hem aracı hem de amacıdır.",
-            "Sağlık, sadece hastalığın olmaması değil, yaşamın tüm aktivitelerine tam katılımdır."
-        ];
-        
-        const authors = [
-            "— Dünya Ergoterapi Federasyonu (WFOT)",
-            "— Dr. William Dunton",
-            "— WHO"
-        ];
-
-        let currentQuote = 0;
-
-        function showQuote(index) {
-            currentQuote = index - 1;
-            updateQuote();
-        }
-
-        function updateQuote() {
-            const quoteText = document.querySelector('section:nth-last-of-type(3) h2');
-            const quoteAuthor = document.querySelector('section:nth-last-of-type(3) p');
-            const dots = document.querySelectorAll('.quote-dot');
-            
-            quoteText.style.opacity = 0;
-            quoteAuthor.style.opacity = 0;
-            
-            setTimeout(() => {
-                quoteText.textContent = `"${quotes[currentQuote]}"`;
-                quoteAuthor.textContent = authors[currentQuote];
-                quoteText.style.opacity = 1;
-                quoteAuthor.style.opacity = 1;
-            }, 300);
-
-            dots.forEach((dot, idx) => {
-                if (idx === currentQuote) {
-                    dot.classList.add('bg-white');
-                    dot.classList.remove('bg-white/30');
-                } else {
-                    dot.classList.remove('bg-white');
-                    dot.classList.add('bg-white/30');
-                }
-            });
-        }
-
-        // Auto-rotate quotes
-        setInterval(() => {
-            currentQuote = (currentQuote + 1) % quotes.length;
-            updateQuote();
-        }, 5000);
 
         // Parallax Effect for Hero
         window.addEventListener('scroll', () => {
