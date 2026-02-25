@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ergoterapi Türkiye - İyileşmenin Sanatı</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'therapy-green': '#2D5A4A',
+                        'therapy-light': '#E8F5E9',
+                        'therapy-accent': '#FF6B6B',
+                        'sand': '#F5F1E8',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .timeline-line {
+            background: linear-gradient(to bottom, #2D5A4A, #4A7C6F, #2D5A4A);
+        }
+        .hero-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(45, 90, 74, 0.15) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .therapy-card:hover {
+            transform: translateY(-10px) rotate(1deg);
+        }
+    </style>
+</head>
+<body class="font-sans bg-sand text-gray-800 overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="glass-effect px-6 py-4">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-hands-holding-circle text-xl"></i>
+                    </div>
+                    <span class="font-serif text-2xl font-bold text-therapy-green">Ergoterapi<span class="text-therapy-accent">TR</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#tarihce" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Tarihçe</a>
+                    <a href="#turkiye" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Türkiye'de Ergoterapi</a>
+                    <a href="#nedir" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Ergoterapi Nedir?</a>
+                    <a href="#alanlar" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Uygulama Alanları</a>
+                </div>
+                <button class="md:hidden text-therapy-green text-2xl" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 bg-therapy-green z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center space-y-8 text-white text-2xl">
+        <button onclick="toggleMenu()" class="absolute top-6 right-6 text-3xl">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="#tarihce" onclick="toggleMenu()">Tarihçe</a>
+        <a href="#turkiye" onclick="toggleMenu()">Türkiye'de Ergoterapi</a>
+        <a href="#nedir" onclick="toggleMenu()">Ergoterapi Nedir?</a>
+        <a href="#alanlar" onclick="toggleMenu()">Uygulama Alanları</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <div class="absolute inset-0 hero-pattern opacity-30"></div>
+        
+        <!-- Animated Background Elements -->
+        <div class="absolute top-20 left-10 w-64 h-64 bg-therapy-green/10 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-therapy-accent/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
+            <div class="space-y-8 animate-fade-in-up">
+                <div class="inline-block px-4 py-2 bg-therapy-green/10 text-therapy-green rounded-full text-sm font-semibold tracking-wide">
+                    <i class="fas fa-star mr-2"></i>1917'den Günümüze
+                </div>
+                <h1 class="font-serif text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
+                    İyileşmenin <span class="text-therapy-green italic">Sanatı</span><br>
+                    <span class="text-3xl md:text-5xl font-normal text-gray-600">Ergoterapi</span>
+                </h1>
+                <p class="text-xl text-gray-600 leading-relaxed max-w-lg">
+                    Bireylerin günlük yaşam aktivitelerine katılımlarını sağlamak için terapötik aktiviteleri kullanan bilimsel ve profesyonel bir disiplin.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="scrollToSection('nedir')" class="px-8 py-4 bg-therapy-green text-white rounded-full font-semibold hover:bg-therapy-green/90 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        Keşfet <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button onclick="scrollToSection('turkiye')" class="px-8 py-4 border-2 border-therapy-green text-therapy-green rounded-full font-semibold hover:bg-therapy-green hover:text-white transition-all">
+                        Türkiye'de Tarihçe
+                    </button>
+                </div>
+            </div>
+            
+            <div class="relative">
+                <div class="absolute inset-0 bg-gradient-to-tr from-therapy-green/20 to-therapy-accent/20 rounded-3xl transform rotate-3"></div>
+                <div class="relative bg-white p-8 rounded-3xl shadow-2xl animate-float">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-4">
+                            <div class="bg-therapy-light p-6 rounded-2xl text-center">
+                                <i class="fas fa-brain text-4xl text-therapy-green mb-3"></i>
+                                <p class="font-semibold text-therapy-green">Nörolojik<br>Rehabilitasyon</p>
+                            </div>
+                            <div class="bg-orange-50 p-6 rounded-2xl text-center">
+                                <i class="fas fa-child text-4xl text-orange-500 mb-3"></i>
+                                <p class="font-semibold text-orange-600">Pediatrik<br>Ergoterapi</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4 mt-8">
+                            <div class="bg-blue-50 p-6 rounded-2xl text-center">
+                                <i class="fas fa-hand-holding-heart text-4xl text-blue-500 mb-3"></i>
+                                <p class="font-semibold text-blue-600">Mental<br>Sağlık</p>
+                            </div>
+                            <div class="bg-purple-50 p-6 rounded-2xl text-center">
+                                <i class="fas fa-wheelchair text-4xl text-purple-500 mb-3"></i>
+                                <p class="font-semibold text-purple-600">Fiziksel<br>Rehabilitasyon</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <div class="inline-flex items-center space-x-2 bg-gray-100 px-4 py-2 rounded-full text-sm text-gray-600">
+                            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                            <span>Türkiye'de 40+ Üniversitede Eğitim</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-therapy-green text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- What is Ergoterapi -->
+    <section id="nedir" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-6">Ergoterapi Nedir?</h2>
+                <div class="w-24 h-1 bg-therapy-green mx-auto rounded-full"></div>
+                <p class="mt-6 text-xl text-gray-600 max-w-3xl mx-auto">
+                    "Ergo" (iş/aktivite) ve "terapi" (tedavi) kelimelerinin birleşiminden oluşan ergoterapi, bireylerin yaşam kalitesini artırmayı hedefleyen bütüncül bir yaklaşımdır.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="therapy-card bg-gradient-to-br from-therapy-light to-white p-8 rounded-3xl shadow-lg transition-all duration-300 scroll-reveal">
+                    <div class="w-16 h-16 bg-therapy-green rounded-2xl flex items-center justify-center text-white text-2xl mb-6 transform rotate-3">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">Birey Merkezli</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Her bireyin benzersiz olduğu bilinciyle, kişiye özel değerlendirme ve tedavi planları oluşturur. Bireyin hedefleri, değerleri ve yaşam tarzı tedavinin merkezindedir.
+                    </p>
+                </div>
+
+                <div class="therapy-card bg-gradient-to-br from-orange-50 to-white p-8 rounded-3xl shadow-lg transition-all duration-300 scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="w-16 h-16 bg-orange-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 transform -rotate-3">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">Aktivite Tabanlı</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Günlük yaşam aktiviteleri, oyunlar, sanatsal etkinlikler ve işlevsel görevler terapötik araç olarak kullanılır. "Yaparak öğrenme" ve "iyileşme" prensibi esastır.
+                    </p>
+                </div>
+
+                <div class="therapy-card bg-gradient-to-br from-blue-50 to-white p-8 rounded-3xl shadow-lg transition-all duration-300 scroll-reveal" style="transition-delay: 0.4s;">
+                    <div class="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 transform rotate-3">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-gray-900 mb-4">Bütüncül Yaklaşım</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Fiziksel, duygusal, bilişsel ve sosyal yönleri bir arada değerlendirir. Aile, çevre ve toplum faktörlerini de içeren kapsamlı bir rehabilitasyon sunar.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center scroll-reveal">
+                    <div class="text-4xl font-bold text-therapy-green mb-2 counter" data-target="107">0</div>
+                    <p class="text-gray-600">Yıllık Tarihçe</p>
+                </div>
+                <div class="text-center scroll-reveal">
+                    <div class="text-4xl font-bold text-therapy-green mb-2 counter" data-target="40">0</div>
+                    <p class="text-gray-600">Üniversite Programı</p>
+                </div>
+                <div class="text-center scroll-reveal">
+                    <div class="text-4xl font-bold text-therapy-green mb-2 counter" data-target="5000">0</div>
+                    <p class="text-gray-600">Aktif Ergoterapist</p>
+                </div>
+                <div class="text-center scroll-reveal">
+                    <div class="text-4xl font-bold text-therapy-green mb-2 counter" data-target="100">0</div>
+                    <p class="text-gray-600">Ülkede Uygulama</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Timeline -->
+    <section id="tarihce" class="py-24 bg-sand relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background-image: repeating-linear-gradient(45deg, #2D5A4A 0, #2D5A4A 1px, transparent 0, transparent 50%); background-size: 20px 20px;"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-6">Dünyada Ergoterapi Tarihçesi</h2>
+                <div class="w-24 h-1 bg-therapy-green mx-auto rounded-full"></div>
+            </div>
+
+            <div class="relative">
+                <!-- Timeline Line -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full timeline-line rounded-full hidden md:block"></div>
+
+                <!-- 1917 -->
+                <div class="relative mb-16 scroll-reveal">
+                    <div class="md:flex items-center justify-between">
+                        <div class="md:w-5/12 md:text-right mb-4 md:mb-0">
+                            <div class="bg-white p-6 rounded-2xl shadow-lg inline-block transform hover:scale-105 transition-transform">
+                                <span class="text-therapy-accent font-bold text-lg">1917</span>
+                                <h3 class="font-serif text-xl font-bold text-gray-900 mt-2">Doğuşu: İngiltere</h3>
+                                <p class="text-gray-600 mt-2">I. Dünya Savaşı sırasında yaralı askerlerin rehabilitasyonu için "Ergoterapi" terimi ilk kez kullanıldı. Dr. William Dunton öncülük etti.</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-therapy-green rounded-full border-4 border-white shadow-lg hidden md:block z-10"></div>
+                        <div class="md:w-5/12"></div>
+                    </div>
+                </div>
+
+                <!-- 1920s -->
+                <div class="relative mb-16 scroll-reveal">
+                    <div class="md:flex items-center justify-between">
+                        <div class="md:w-5/12"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-therapy-green rounded-full border-4 border-white shadow-lg hidden md:block z-10"></div>
+                        <div class="md:w-5/12 md:pl-8">
+                            <div class="bg-white p-6 rounded-2xl shadow-lg inline-block transform hover:scale-105 transition-transform">
+                                <span class="text-therapy-accent font-bold text-lg">1920'ler</span>
+                                <h3 class="font-serif text-xl font-bold text-gray-900 mt-2">ABD'de Kurumsallaşma</h3>
+                                <p class="text-gray-600 mt-2">1921'de ilk ergoterapi okulu açıldı. 1923'te Ulusal Ergoterapi Derneği kuruldu. Eleanor Clarke Slagle önemli katkılar sağladı.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1950s -->
+                <div class="relative mb-16 scroll-reveal">
+                    <div class="md:flex items-center justify-between">
+                        <div class="md:w-5/12 md:text-right mb-4 md:mb-0">
+                            <div class="bg-white p-6 rounded-2xl shadow-lg inline-block transform hover:scale-105 transition-transform">
+                                <span class="text-therapy-accent font-bold text-lg">1950'ler</span>
+                                <h3 class="font-serif text-xl font-bold text-gray-900 mt-2">Bilimsel Temeller</h3>
+                                <p class="text-gray-600 mt-2">Nörolojik ergoterapi gelişmeye başladı. Ayers'in duyusal bütünleme teorisi (1960'larda) devrim yarattı.</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-therapy-green rounded-full border-4 border-white shadow-lg hidden md:block z-10"></div>
+                        <div class="md:w-5/12"></div>
+                    </div>
+                </div>
+
+                <!-- 2000s -->
+                <div class="relative mb-16 scroll-reveal">
+                    <div class="md:flex items-center justify-between">
+                        <div class="md:w-5/12"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-therapy-green rounded-full border-4 border-white shadow-lg hidden md:block z-10"></div>
+                        <div class="md:w-5/12 md:pl-8">
+                            <div class="bg-white p-6 rounded-2xl shadow-lg inline-block transform hover:scale-105 transition-transform">
+                                <span class="text-therapy-accent font-bold text-lg">2000'ler</span>
+                                <h3 class="font-serif text-xl font-bold text-gray-900 mt-2">Global Standartlar</h3>
+                                <p class="text-gray-600 mt-2">Dünya Ergoterapi Federasyonu (WFOT) küresel standartları belirledi. Kanıta dayalı uygulamalar ön plana çıktı.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2020s -->
+                <div class="relative scroll-reveal">
+                    <div class="md:flex items-center justify-between">
+                        <div class="md:w-5/12 md:text-right mb-4 md:mb-0">
+                            <div class="bg-white p-6 rounded-2xl shadow-lg inline-block transform hover:scale-105 transition-transform border-2 border-therapy-green">
+                                <span class="text-therapy-accent font-bold text-lg">Günümüz</span>
+                                <h3 class="font-serif text-xl font-bold text-gray-900 mt-2">Teknoloji ve İnovasyon</h3>
+                                <p class="text-gray-600 mt-2">Tele-sağlık, robotik, sanal gerçeklik ve yapay zeka uygulamaları. Birey merkezli bakım ve toplumsal katılım odaklı yaklaşımlar.</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-therapy-accent rounded-full border-4 border-white shadow-lg hidden md:block z-10 animate-pulse"></div>
+                        <div class="md:w-5/12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Turkey Section -->
+    <section id="turkiye" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-6">Türkiye'de Ergoterapi</h2>
+                <div class="w-24 h-1 bg-therapy-green mx-auto rounded-full"></div>
+                <p class="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
+                    Türkiye'de ergoterapi eğitimi ve mesleki uygulamaların gelişim öyküsü
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
+                <div class="space-y-6 scroll-reveal">
+                    <div class="bg-therapy-light p-6 rounded-2xl border-l-4 border-therapy-green">
+                        <h3 class="font-serif text-2xl font-bold text-gray-900 mb-3">1960'lar: İlk Adımlar</h3>
+                        <p class="text-gray-700">
+                            Türkiye'de ergoterapi ilk olarak 1960'larda fizik tedavi ve rehabilitasyon merkezlerinde yardımcı bir uygulama olarak başladı. O dönemde "meslek terapisi" olarak biliniyordu.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-6 rounded-2xl border-l-4 border-blue-500">
+                        <h3 class="font-serif text-2xl font-bold text-gray-900 mb-3">1992: İlk Akademik Program</h3>
+                        <p class="text-gray-700">
+                            Hacettepe Üniversitesi Sağlık Bilimleri Fakültesi Fizik Tedavi ve Rehabilitasyon Yüksekokulu bünyesinde ilk ergoterapi lisans programı açıldı. Bu tarih Türk ergoterapisi için dönüm noktası oldu.
+                        </p>
+                    </div>
+
+                    <div class="bg-purple-50 p-6 rounded-2xl border-l-4 border-purple-500">
+                        <h3 class="font-serif text-2xl font-bold text-gray-900 mb-3">2000'ler: Hızlı Büyüme</h3>
+                        <p class="text-gray-700">
+                            2000'li yıllarda çok sayıda üniversite ergoterapi bölümü açtı. İstanbul Üniversitesi, Ankara Üniversitesi ve Dokuz Eylül Üniversitesi öncü kurumlar oldu.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="relative scroll-reveal">
+                    <div class="absolute inset-0 bg-gradient-to-br from-therapy-green/20 to-therapy-accent/20 rounded-3xl transform -rotate-3"></div>
+                    <div class="relative bg-white p-8 rounded-3xl shadow-2xl">
+                        <h3 class="font-serif text-2xl font-bold text-gray-900 mb-6 text-center">Türkiye'de Önemli Tarihler</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-therapy-light transition-colors cursor-pointer group">
+                                <div class="w-12 h-12 bg-therapy-green text-white rounded-full flex items-center justify-center font-bold group-hover:scale-110 transition-transform">92</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">İlk Program</h4>
+                                    <p class="text-sm text-gray-600">Hacettepe Üniversitesi</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-therapy-light transition-colors cursor-pointer group">
+                                <div class="w-12 h-12 bg-therapy-green text-white rounded-full flex items-center justify-center font-bold group-hover:scale-110 transition-transform">01</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Dernek Kuruluşu</h4>
+                                    <p class="text-sm text-gray-600">Türk Ergoterapistler Derneği</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-therapy-light transition-colors cursor-pointer group">
+                                <div class="w-12 h-12 bg-therapy-green text-white rounded-full flex items-center justify-center font-bold group-hover:scale-110 transition-transform">08</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Meslek Tanınırlığı</h4>
+                                    <p class="text-sm text-gray-600">Sağlık Bakanlığı kadroları</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-therapy-light transition-colors cursor-pointer group">
+                                <div class="w-12 h-12 bg-therapy-green text-white rounded-full flex items-center justify-center font-bold group-hover:scale-110 transition-transform">18</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Lisans Tamamlama</h4>
+                                    <p class="text-sm text-gray-600">Önlisans programlarına geçiş</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-therapy-light transition-colors cursor-pointer group">
+                                <div class="w-12 h-12 bg-therapy-accent text-white rounded-full flex items-center justify-center font-bold group-hover:scale-110 transition-transform">23</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Günümüz</h4>
+                                    <p class="text-sm text-gray-600">40+ üniversite, 5000+ mezun</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Turkey Stats -->
+            <div class="bg-gradient-to-r from-therapy-green to-therapy-green/80 rounded-3xl p-8 md:p-12 text-white scroll-reveal">
+                <div class="grid md:grid-cols-4 gap-8 text-center">
+                    <div>
+                        <div class="text-4xl font-bold mb-2">40+</div>
+                        <p class="text-therapy-light">Üniversite Programı</p>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold mb-2">5000+</div>
+                        <p class="text-therapy-light">Aktif Ergoterapist</p>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold mb-2">200+</div>
+                        <p class="text-therapy-light">Kamu Hastanesi</p>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold mb-2">30+</div>
+                        <p class="text-therapy-light">Yıllık Geçmiş</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Areas -->
+    <section id="alanlar" class="py-24 bg-sand">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-6">Uygulama Alanları</h2>
+                <div class="w-24 h-1 bg-therapy-green mx-auto rounded-full"></div>
+                <p class="text-xl text-gray-600 mt-6">Ergoterapistlerin çalıştığı başlıca alanlar</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal">
+                    <div class="h-48 bg-gradient-to-br from-green-400 to-therapy-green flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-brain text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
+                        <i class="fas fa-brain text-5xl text-white relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Nörolojik Rehabilitasyon</h3>
+                        <p class="text-gray-600 mb-4">İnme, beyin travması, Parkinson, MS gibi nörolojik hastalıklarda fonksiyonel bağımsızlığı artırma.</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li><i class="fas fa-check text-therapy-green mr-2"></i>İnme rehabilitasyonu</li>
+                            <li><i class="fas fa-check text-therapy-green mr-2"></i>Spina bifida</li>
+                            <li><i class="fas fa-check text-therapy-green mr-2"></i>Travmatik beyin hasarı</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="h-48 bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-child text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
+                        <i class="fas fa-child text-5xl text-white relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Pediatrik Ergoterapi</h3>
+                        <p class="text-gray-600 mb-4">Gelişimsel gerilik, otizm, serebral palsi, öğrenme güçlüğü olan çocuklarda destek.</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li><i class="fas fa-check text-orange-500 mr-2"></i>Otizm spektrum bozukluğu</li>
+                            <li><i class="fas fa-check text-orange-500 mr-2"></i>Duyu bütünleme</li>
+                            <li><i class="fas fa-check text-orange-500 mr-2"></i>Gelişimsel koordinasyon</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="h-48 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-hand-holding-heart text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
+                        <i class="fas fa-hand-holding-heart text-5xl text-white relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Mental Sağlık</h3>
+                        <p class="text-gray-600 mb-4">Depresyon, anksiyete, şizofreni, bağımlılık gibi psikiyatrik durumlarda tedavi.</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li><i class="fas fa-check text-blue-500 mr-2"></i>Grup terapileri</li>
+                            <li><i class="fas fa-check text-blue-500 mr-2"></i>Günlük yaşam becerileri</li>
+                            <li><i class="fas fa-check text-blue-500 mr-2"></i>İş ve meslek rehabilitasyonu</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal">
+                    <div class="h-48 bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-wheelchair text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
+                        <i class="fas fa-wheelchair text-5xl text-white relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Ortopedik Rehabilitasyon</h3>
+                        <p class="text-gray-600 mb-4">El ve üst ekstremite yaralanmaları, amputasyon, eklem protezleri sonrası rehabilitasyon.</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li><i class="fas fa-check text-purple-500 mr-2"></i>El cerrahisi rehabilitasyonu</li>
+                            <li><i class="fas fa-check text-purple-500 mr-2"></i>Protez eğitimi</li>
+                            <li><i class="fas fa-check text-purple-500 mr-2"></i>Yanık rehabilitasyonu</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="h-48 bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-users text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
+                        <i class="fas fa-users text-5xl text-white relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Geriatri</h3>
+                        <p class="text-gray-600 mb-4">Yaşlı bireylerde demans, Alzheimer, düşme riski ve günlük yaşam aktivitelerinin desteklenmesi.</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li><i class="fas fa-check text-red-500 mr-2"></i>Demans bakımı</li>
+                            <li><i class="fas fa-check text-red-500 mr-2"></i>Ev güvenliği düzenlemesi</li>
+                            <li><i class="fas fa-check text-red-500 mr-2"></i>Bakıver desteği</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="h-48 bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-home text-6xl text-white/30 absolute transform group-hover:scale-110 transition-transform duration-500"></i>
+                        <i class="fas fa-home text-5xl text-white relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Ortopedik Protez/Ortez</h3>
+                        <p class="text-gray-600 mb-4">Yardımcı teknolojiler, ev düzenlemesi ve erişilebilirlik danışmanlığı.</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li><i class="fas fa-check text-teal-500 mr-2"></i>Akıllı ev teknolojileri</li>
+                            <li><i class="fas fa-check text-teal-500 mr-2"></i>Erişilebilirlik düzenlemeleri</li>
+                            <li><i class="fas fa-check text-teal-500 mr-2"></i>Araç adaptasyonları</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Quote Section -->
+    <section class="py-24 bg-therapy-green text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: repeating-radial-gradient(circle at 0 0, transparent 0, #ffffff 11px), repeating-linear-gradient(#2D5A4A, #2D5A4A); background-size: 20px 20px;"></div>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10 scroll-reveal">
+            <i class="fas fa-quote-left text-6xl text-therapy-accent mb-8 opacity-50"></i>
+            <h2 class="font-serif text-3xl md:text-5xl font-bold mb-8 leading-tight">
+                "Ergoterapi, bireylerin yaşamda yapmak istedikleri şeyleri yapabilmeleri için güçlendirilmesidir."
+            </h2>
+            <p class="text-xl text-therapy-light">— Dünya Ergoterapi Federasyonu (WFOT)</p>
+            
+            <div class="mt-12 flex justify-center space-x-4">
+                <button onclick="showQuote(1)" class="w-3 h-3 rounded-full bg-white/30 hover:bg-white transition-colors quote-dot active"></button>
+                <button onclick="showQuote(2)" class="w-3 h-3 rounded-full bg-white/30 hover:bg-white transition-colors quote-dot"></button>
+                <button onclick="showQuote(3)" class="w-3 h-3 rounded-full bg-white/30 hover:bg-white transition-colors quote-dot"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="scroll-reveal">
+                    <h2 class="font-serif text-4xl font-bold text-gray-900 mb-6">Ergoterapist Nasıl Olunur?</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">1</div>
+                            <div>
+                                <h4 class="font-bold text-lg text-gray-900">Lisans Eğitimi</h4>
+                                <p class="text-gray-600">4 yıllık Ergoterapi lisans programını tamamlamak (FTR Yüksekokulları veya Sağlık Bilimleri Fakülteleri).</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">2</div>
+                            <div>
+                                <h4 class="font-bold text-lg text-gray-900">Staj ve Uygulama</h4>
+                                <p class="text-gray-600">Eğitim süresince çeşitli kliniklerde staj yapmak ve 1000+ saat uygulamalı eğitim almak.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">3</div>
+                            <div>
+                                <h4 class="font-bold text-lg text-gray-900">Mezuniyet ve Lisans</h4>
+                                <p class="text-gray-600">Sağlık Bakanlığı'ndan ergoterapist diploması almak ve TERCED üyesi olmak.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">4</div>
+                            <div>
+                                <h4 class="font-bold text-lg text-gray-900">Uzmanlık (İsteğe Bağlı)</h4>
+                                <p class="text-gray-600">Yüksek lisans ve doktora yaparak akademik kariyer veya klinik uzmanlık alanı seçebilirsiniz.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative scroll-reveal">
+                    <div class="absolute inset-0 bg-gradient-to-br from-therapy-accent/20 to-therapy-green/20 rounded-3xl transform rotate-3"></div>
+                    <div class="relative bg-sand p-8 rounded-3xl shadow-xl">
+                        <h3 class="font-serif text-2xl font-bold text-gray-900 mb-6">Eğitim İçeriği</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm">
+                                <i class="fas fa-book-medical text-therapy-green text-2xl mb-2"></i>
+                                <p class="font-semibold text-sm">Anatomi & Fizyoloji</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm">
+                                <i class="fas fa-brain text-therapy-green text-2xl mb-2"></i>
+                                <p class="font-semibold text-sm">Nöroloji</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm">
+                                <i class="fas fa-hands text-therapy-green text-2xl mb-2"></i>
+                                <p class="font-semibold text-sm">Kinezyoloji</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm">
+                                <i class="fas fa-psychology text-therapy-green text-2xl mb-2"></i>
+                                <p class="font-semibold text-sm">Psikiyatri</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm">
+                                <i class="fas fa-child text-therapy-green text-2xl mb-2"></i>
+                                <p class="font-semibold text-sm">Pediatri</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm">
+                                <i class="fas fa-user-md text-therapy-green text-2xl mb-2"></i>
+                                <p class="font-semibold text-sm">Klinik Uygulama</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center">
+                            <i class="fas fa-hands-holding-circle text-xl"></i>
+                        </div>
+                        <span class="font-serif text-2xl font-bold">Ergoterapi<span class="text-therapy-accent">TR</span></span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Türkiye'de ergoterapi mesleğinin tanıtımı ve gelişimi için oluşturulmuş bilgilendirici platform.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Hızlı Bağlantılar</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#tarihce" class="hover:text-therapy-green transition-colors">Tarihçe</a></li>
+                        <li><a href="#turkiye" class="hover:text-therapy-green transition-colors">Türkiye'de Ergoterapi</a></li>
+                        <li><a href="#nedir" class="hover:text-therapy-green transition-colors">Ergoterapi Nedir?</a></li>
+                        <li><a href="#alanlar" class="hover:text-therapy-green transition-colors">Uygulama Alanları</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Kuruluşlar</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-therapy-green transition-colors">TERCED</a></li>
+                        <li><a href="#" class="hover:text-therapy-green transition-colors">WFOT</a></li>
+                        <li><a href="#" class="hover:text-therapy-green transition-colors">Sağlık Bakanlığı</a></li>
+                        <li><a href="#" class="hover:text-therapy-green transition-colors">Üniversiteler</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lg mb-4">İletişim</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-envelope mr-2"></i> info@ergoterapi-tr.org</li>
+                        <li><i class="fas fa-phone mr-2"></i> +90 312 123 45 67</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i> Ankara, Türkiye</li>
+                    </ul>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-therapy-green transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-therapy-green transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-therapy-green transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2024 Ergoterapi Türkiye. Tüm hakları saklıdır. | Bu site eğitim ve bilgilendirme amaçlıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('translate-x-full');
+        }
+
+        // Smooth Scroll
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Start counters if inside the element
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => {
+                        const target = parseInt(counter.getAttribute('data-target'));
+                        animateCounter(counter, target);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+
+        // Counter Animation
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target + (target > 100 ? '+' : '');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 30);
+        }
+
+        // Quote Slider
+        const quotes = [
+            "Ergoterapi, bireylerin yaşamda yapmak istedikleri şeyleri yapabilmeleri için güçlendirilmesidir.",
+            "Aktivite, ergoterapinin hem aracı hem de amacıdır.",
+            "Sağlık, sadece hastalığın olmaması değil, yaşamın tüm aktivitelerine tam katılımdır."
+        ];
+        
+        const authors = [
+            "— Dünya Ergoterapi Federasyonu (WFOT)",
+            "— Dr. William Dunton",
+            "— WHO"
+        ];
+
+        let currentQuote = 0;
+
+        function showQuote(index) {
+            currentQuote = index - 1;
+            updateQuote();
+        }
+
+        function updateQuote() {
+            const quoteText = document.querySelector('section:nth-last-of-type(3) h2');
+            const quoteAuthor = document.querySelector('section:nth-last-of-type(3) p');
+            const dots = document.querySelectorAll('.quote-dot');
+            
+            quoteText.style.opacity = 0;
+            quoteAuthor.style.opacity = 0;
+            
+            setTimeout(() => {
+                quoteText.textContent = `"${quotes[currentQuote]}"`;
+                quoteAuthor.textContent = authors[currentQuote];
+                quoteText.style.opacity = 1;
+                quoteAuthor.style.opacity = 1;
+            }, 300);
+
+            dots.forEach((dot, idx) => {
+                if (idx === currentQuote) {
+                    dot.classList.add('bg-white');
+                    dot.classList.remove('bg-white/30');
+                } else {
+                    dot.classList.remove('bg-white');
+                    dot.classList.add('bg-white/30');
+                }
+            });
+        }
+
+        // Auto-rotate quotes
+        setInterval(() => {
+            currentQuote = (currentQuote + 1) % quotes.length;
+            updateQuote();
+        }, 5000);
+
+        // Parallax Effect for Hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero-pattern');
+            if (parallax) {
+                parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
