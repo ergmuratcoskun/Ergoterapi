@@ -170,6 +170,56 @@
         .visitor-counter i {
             margin-right: 8px;
         }
+
+        /* Game Styles */
+        .game-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .game-canvas {
+            border-radius: 12px;
+            background: white;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .memory-card {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+        .memory-card.matched {
+            animation: matchPulse 0.6s ease;
+        }
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1) rotateY(180deg); }
+            50% { transform: scale(1.1) rotateY(180deg); }
+        }
+        .peg-hole {
+            transition: all 0.3s ease;
+        }
+        .peg-hole:hover {
+            background-color: rgba(45, 90, 74, 0.1);
+        }
+        .color-target {
+            animation: colorPulse 2s infinite;
+        }
+        @keyframes colorPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .tracing-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: trace 3s linear infinite;
+        }
+        @keyframes trace {
+            to { stroke-dashoffset: 0; }
+        }
     </style>
 <base target="_blank">
 </head>
@@ -196,6 +246,9 @@
                     <a href="#turkiye" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Türkiye'de</a>
                     <a href="#alanlar" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Klinik Alanlar</a>
                     <a href="#degerlendirme" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Değerlendirme</a>
+                    <a href="oyunlar.html" class="text-therapy-green font-bold border-2 border-therapy-green px-4 py-2 rounded-full hover:bg-therapy-green hover:text-white transition-all">
+                        <i class="fas fa-gamepad mr-2"></i>Therapeutic Games
+                    </a>
                 </div>
                 <button class="md:hidden text-therapy-green text-2xl" onclick="toggleMenu()">
                     <i class="fas fa-bars"></i>
@@ -229,9 +282,9 @@
                     <button onclick="scrollToSection('alanlar')" class="px-8 py-4 bg-therapy-green text-white rounded-full font-semibold hover:bg-therapy-green/90 transition-all transform hover:scale-105 shadow-lg">
                         Klinik Alanları Keşfet <i class="fas fa-arrow-right ml-2"></i>
                     </button>
-                    <button onclick="scrollToSection('degerlendirme')" class="px-8 py-4 border-2 border-therapy-green text-therapy-green rounded-full font-semibold hover:bg-therapy-green hover:text-white transition-all">
-                        Değerlendirme Yöntemleri
-                    </button>
+                    <a href="oyunlar.html" class="px-8 py-4 border-2 border-therapy-green text-therapy-green rounded-full font-semibold hover:bg-therapy-green hover:text-white transition-all flex items-center">
+                        <i class="fas fa-gamepad mr-2"></i>Terapötik Oyunlar
+                    </a>
                 </div>
             </div>
             
@@ -1333,7 +1386,7 @@
                     <ul class="space-y-2 text-gray-400">
                         <li><a href="#alanlar" class="hover:text-therapy-green transition-colors">Klinik Alanlar</a></li>
                         <li><a href="#degerlendirme" class="hover:text-therapy-green transition-colors">Değerlendirme</a></li>
-                        <li><a href="#tarihce" class="hover:text-therapy-green transition-colors">Tarihçe</a></li>
+                        <li><a href="oyunlar.html" class="hover:text-therapy-green transition-colors">Terapötik Oyunlar</a></li>
                     </ul>
                 </div>
 
