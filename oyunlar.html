@@ -1,0 +1,1000 @@
+index.html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terapötik Oyunlar - Ergoterapi Türkiye</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'therapy-green': '#2D5A4A',
+                        'therapy-light': '#E8F5E9',
+                        'therapy-accent': '#FF6B6B',
+                        'therapy-dark': '#1B4332',
+                        'sand': '#F5F1E8',
+                        'whatsapp': '#25D366',
+                        'neuro': '#3B82F6',
+                        'pediatric': '#F59E0B',
+                        'mental': '#8B5CF6',
+                        'ortho': '#EC4899',
+                        'geri': '#10B981',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .game-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .memory-card {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+        .memory-card.matched {
+            animation: matchPulse 0.6s ease;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1) rotateY(180deg); }
+            50% { transform: scale(1.1) rotateY(180deg); }
+        }
+        .peg-hole {
+            transition: all 0.3s ease;
+        }
+        .peg-hole:hover {
+            background-color: rgba(45, 90, 74, 0.1);
+        }
+        .color-target {
+            animation: colorPulse 2s infinite;
+        }
+        @keyframes colorPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .tracing-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: trace 3s linear infinite;
+        }
+        @keyframes trace {
+            to { stroke-dashoffset: 0; }
+        }
+        .game-canvas {
+            border-radius: 12px;
+            background: white;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .visitor-counter {
+            position: fixed;
+            bottom: 6px;
+            left: 6px;
+            background: rgba(45, 90, 74, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 50;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+        .visitor-counter i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body class="font-sans bg-sand text-gray-800 overflow-x-hidden">
+
+    <!-- Visitor Counter -->
+    <div class="visitor-counter">
+        <i class="fas fa-eye"></i>
+        <span id="visitorCount">0</span> ziyaretçi
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="glass-effect px-6 py-4 bg-white/90">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-hands-holding-circle text-xl"></i>
+                    </div>
+                    <span class="font-serif text-2xl font-bold text-therapy-green">Ergoterapi<span class="text-therapy-accent">TR</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Ana Sayfa</a>
+                    <a href="index.html#alanlar" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Klinik Alanlar</a>
+                    <a href="index.html#degerlendirme" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Değerlendirme</a>
+                    <a href="oyunlar.html" class="text-therapy-green font-bold border-2 border-therapy-green px-4 py-2 rounded-full hover:bg-therapy-green hover:text-white transition-all">
+                        <i class="fas fa-gamepad mr-2"></i>Oyunlar
+                    </a>
+                </div>
+                <button class="md:hidden text-therapy-green text-2xl" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-20 bg-gradient-to-br from-therapy-light via-white to-sand">
+        <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(circle at 1px 1px, rgba(45, 90, 74, 0.15) 1px, transparent 0); background-size: 40px 40px;"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
+            <div class="inline-flex items-center px-4 py-2 bg-therapy-green/10 text-therapy-green rounded-full text-sm font-semibold mb-6">
+                <i class="fas fa-gamepad mr-2"></i>Terapötik Aktiviteler
+            </div>
+            <h1 class="font-serif text-5xl md:text-6xl font-bold text-gray-900 leading-tight mb-6">
+                Ergoterapi <span class="text-therapy-green italic">Oyunları</span>
+            </h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+                Bilişsel fonksiyonlar, ince motor beceriler, el-göz koordinasyonu ve duyu bütünleme için tasarlanmış interaktif terapötik oyunlar.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
+                    <i class="fas fa-brain mr-2"></i>Bilişsel
+                </span>
+                <span class="px-4 py-2 bg-pink-100 text-pink-800 rounded-full text-sm font-semibold">
+                    <i class="fas fa-hand mr-2"></i>Motor
+                </span>
+                <span class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold">
+                    <i class="fas fa-eye mr-2"></i>Görsel Algı
+                </span>
+                <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+                    <i class="fas fa-bullseye mr-2"></i>Koordinasyon
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Grid -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <!-- Game 1: Memory Match (Bilişsel/Hafıza) -->
+            <div class="mb-20">
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 shadow-xl">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="md:w-1/3">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-neuro rounded-full flex items-center justify-center text-white mr-4">
+                                    <i class="fas fa-brain text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-2xl text-gray-900">Hafıza Eşleştirme</h3>
+                                    <p class="text-sm text-neuro font-semibold">Bilişsel Eğitim</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mb-4">
+                                Görsel hafıza, dikkat süresi ve bilişsel esneklik için tasarlanmış klasik eşleştirme oyunu. 
+                                İnme sonrası unutkanlık, demans ve öğrenme güçlüğü olan bireyler için uygundur.
+                            </p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-neuro mr-2"></i>
+                                    <span>Görsel hafıza geliştirme</span>
+                                </div>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-neuro mr-2"></i>
+                                    <span>Dikkat ve konsantrasyon</span>
+                                </div>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-neuro mr-2"></i>
+                                    <span>Planlama stratejileri</span>
+                                </div>
+                            </div>
+                            <div class="mt-6 flex gap-2">
+                                <span class="px-3 py-1 bg-blue-200 text-blue-800 rounded-full text-xs">Demans</span>
+                                <span class="px-3 py-1 bg-blue-200 text-blue-800 rounded-full text-xs">İnme</span>
+                                <span class="px-3 py-1 bg-blue-200 text-blue-800 rounded-full text-xs">Öğrenme</span>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3">
+                            <div class="bg-white rounded-2xl p-6 shadow-inner">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="text-sm text-gray-600">Hamle: <span id="memoryMoves" class="font-bold text-neuro">0</span></div>
+                                    <div class="text-sm text-gray-600">Eşleşme: <span id="memoryMatches" class="font-bold text-neuro">0</span>/8</div>
+                                    <button onclick="resetMemoryGame()" class="px-4 py-2 bg-neuro text-white rounded-lg hover:bg-blue-600 transition-colors text-sm">
+                                        <i class="fas fa-redo mr-2"></i>Yeniden Başla
+                                    </button>
+                                </div>
+                                <div id="memoryGrid" class="grid grid-cols-4 gap-3 max-w-md mx-auto">
+                                    <!-- Cards will be generated by JS -->
+                                </div>
+                                <div id="memoryMessage" class="text-center mt-4 h-6 text-neuro font-semibold"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 2: Pegboard (İnce Motor) -->
+            <div class="mb-20">
+                <div class="bg-gradient-to-br from-pink-50 to-pink-100 rounded-3xl p-8 shadow-xl">
+                    <div class="flex flex-col md:flex-row-reverse gap-8">
+                        <div class="md:w-1/3">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-ortho rounded-full flex items-center justify-center text-white mr-4">
+                                    <i class="fas fa-hand text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-2xl text-gray-900">Pegboard Tak</h3>
+                                    <p class="text-sm text-ortho font-semibold">İnce Motor Beceriler</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mb-4">
+                                El inceliği, parmak kavrama ve el-göz koordinasyonu için pegboard aktivitesi. 
+                                Karpal tünel sendromu, tendon yaralanmaları ve nörolojik rehabilitasyonda kullanılır.
+                            </p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-ortho mr-2"></i>
+                                    <span>Pinç (kıstırma) kavraması</span>
+                                </div>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-ortho mr-2"></i>
+                                    <span>Bilateral koordinasyon</span>
+                                </div>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-ortho mr-2"></i>
+                                    <span>Hassas motor kontrol</span>
+                                </div>
+                            </div>
+                            <div class="mt-6 flex gap-2">
+                                <span class="px-3 py-1 bg-pink-200 text-pink-800 rounded-full text-xs">Ortopedi</span>
+                                <span class="px-3 py-1 bg-pink-200 text-pink-800 rounded-full text-xs">Nöro</span>
+                                <span class="px-3 py-1 bg-pink-200 text-pink-800 rounded-full text-xs">Pediatri</span>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3">
+                            <div class="bg-white rounded-2xl p-6 shadow-inner">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="text-sm text-gray-600">Skor: <span id="pegScore" class="font-bold text-ortho">0</span></div>
+                                    <div class="text-sm text-gray-600">Hedef: <span id="pegTarget" class="font-bold text-ortho">-</span></div>
+                                    <button onclick="resetPegGame()" class="px-4 py-2 bg-ortho text-white rounded-lg hover:bg-pink-600 transition-colors text-sm">
+                                        <i class="fas fa-redo mr-2"></i>Yeni Hedef
+                                    </button>
+                                </div>
+                                <div id="pegBoard" class="grid grid-cols-5 gap-2 max-w-sm mx-auto bg-gray-100 p-4 rounded-xl">
+                                    <!-- Peg holes will be generated by JS -->
+                                </div>
+                                <div class="flex justify-center gap-4 mt-4">
+                                    <div class="text-center">
+                                        <div class="w-8 h-8 bg-red-500 rounded-full mx-auto mb-1 cursor-pointer hover:scale-110 transition-transform" onclick="selectPegColor('red')"></div>
+                                        <span class="text-xs">Kırmızı</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="w-8 h-8 bg-blue-500 rounded-full mx-auto mb-1 cursor-pointer hover:scale-110 transition-transform" onclick="selectPegColor('blue')"></div>
+                                        <span class="text-xs">Mavi</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="w-8 h-8 bg-green-500 rounded-full mx-auto mb-1 cursor-pointer hover:scale-110 transition-transform" onclick="selectPegColor('green')"></div>
+                                        <span class="text-xs">Yeşil</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="w-8 h-8 bg-yellow-500 rounded-full mx-auto mb-1 cursor-pointer hover:scale-110 transition-transform" onclick="selectPegColor('yellow')"></div>
+                                        <span class="text-xs">Sarı</span>
+                                    </div>
+                                </div>
+                                <div id="pegMessage" class="text-center mt-4 h-6 text-ortho font-semibold"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 3: Tracing Path (El-Göz Koordinasyonu) -->
+            <div class="mb-20">
+                <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-3xl p-8 shadow-xl">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="md:w-1/3">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-pediatric rounded-full flex items-center justify-center text-white mr-4">
+                                    <i class="fas fa-route text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-2xl text-gray-900">İz Takibi</h3>
+                                    <p class="text-sm text-pediatric font-semibold">El-Göz Koordinasyonu</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mb-4">
+                                Görsel-motor entegrasyon ve ince motor kontrol için çizgi izleme aktivitesi. 
+                                Dyspraxia, görsel algı bozuklukları ve yazıya hazırlık için idealdir.
+                            </p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-pediatric mr-2"></i>
+                                    <span>Görsel-motor entegrasyon</span>
+                                </div>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-pediatric mr-2"></i>
+                                    <span>Kalem tutuş kontrolü</span>
+                                </div>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-pediatric mr-2"></i>
+                                    <span>Uzamsal planlama</span>
+                                </div>
+                            </div>
+                            <div class="mt-6 flex gap-2">
+                                <span class="px-3 py-1 bg-yellow-200 text-yellow-800 rounded-full text-xs">Dyspraxia</span>
+                                <span class="px-3 py-1 bg-yellow-200 text-yellow-800 rounded-full text-xs">Yazı</span>
+                                <span class="px-3 py-1 bg-yellow-200 text-yellow-800 rounded-full text-xs">Görsel Algı</span>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3">
+                            <div class="bg-white rounded-2xl p-6 shadow-inner">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="text-sm text-gray-600">Doğruluk: <span id="traceAccuracy" class="font-bold text-pediatric">0%</span></div>
+                                    <div class="text-sm text-gray-600">Seviye: <span id="traceLevel" class="font-bold text-pediatric">1</span></div>
+                                    <button onclick="resetTraceGame()" class="px-4 py-2 bg-pediatric text-white rounded-lg hover:bg-yellow-600 transition-colors text-sm">
+                                        <i class="fas fa-redo mr-2"></i>Yeni Şekil
+                                    </button>
+                                </div>
+                                <canvas id="traceCanvas" width="500" height="300" class="game-canvas w-full cursor-crosshair touch-none"></canvas>
+                                <div class="flex justify-center gap-4 mt-4">
+                                    <button onclick="setTraceLevel(1)" class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors text-sm">Kolay</button>
+                                    <button onclick="setTraceLevel(2)" class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors text-sm">Orta</button>
+                                    <button onclick="setTraceLevel(3)" class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors text-sm">Zor</button>
+                                </div>
+                                <div id="traceMessage" class="text-center mt-4 h-6 text-pediatric font-semibold"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 4: Color Sequence (Dikkat/Reaksiyon) -->
+            <div class="mb-20">
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-3xl p-8 shadow-xl">
+                    <div class="flex flex-col md:flex-row-reverse gap-8">
+                        <div class="md:w-1/3">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-mental rounded-full flex items-center justify-center text-white mr-4">
+                                    <i class="fas fa-lightbulb text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-2xl text-gray-900">Renk Dizisi</h3>
+                                    <p class="text-sm text-mental font-semibold">Dikkat ve Çalışma Belleği</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mb-4">
+                                İşitsel ve görsel dikkat, çalışma belleği ve reaksiyon zamanı için Simon Says tarzı oyun. 
+                                ADHD, dikkat eksikliği ve executive fonksiyon bozuklukları için uygundur.
+                            </p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-mental mr-2"></i>
+                                    <span>Çalışma belleği</span>
+                                </div>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-mental mr-2"></i>
+                                    <span>Reaksiyon zamanı</span>
+                                </div>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-check text-mental mr-2"></i>
+                                    <span>İnhibisyon kontrolü</span>
+                                </div>
+                            </div>
+                            <div class="mt-6 flex gap-2">
+                                <span class="px-3 py-1 bg-purple-200 text-purple-800 rounded-full text-xs">ADHD</span>
+                                <span class="px-3 py-1 bg-purple-200 text-purple-800 rounded-full text-xs">Dikkat</span>
+                                <span class="px-3 py-1 bg-purple-200 text-purple-800 rounded-full text-xs">Bellek</span>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3">
+                            <div class="bg-white rounded-2xl p-6 shadow-inner">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="text-sm text-gray-600">Puan: <span id="sequenceScore" class="font-bold text-mental">0</span></div>
+                                    <div class="text-sm text-gray-600">Seri: <span id="sequenceStreak" class="font-bold text-mental">0</span></div>
+                                    <button onclick="startSequenceGame()" class="px-4 py-2 bg-mental text-white rounded-lg hover:bg-purple-600 transition-colors text-sm">
+                                        <i class="fas fa-play mr-2"></i>Başla
+                                    </button>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 max-w-xs mx-auto mb-6">
+                                    <button id="colorBtn0" class="w-32 h-32 bg-red-500 rounded-2xl shadow-lg transform active:scale-95 transition-all disabled:opacity-50" onclick="handleColorClick(0)" disabled></button>
+                                    <button id="colorBtn1" class="w-32 h-32 bg-blue-500 rounded-2xl shadow-lg transform active:scale-95 transition-all disabled:opacity-50" onclick="handleColorClick(1)" disabled></button>
+                                    <button id="colorBtn2" class="w-32 h-32 bg-green-500 rounded-2xl shadow-lg transform active:scale-95 transition-all disabled:opacity-50" onclick="handleColorClick(2)" disabled></button>
+                                    <button id="colorBtn3" class="w-32 h-32 bg-yellow-500 rounded-2xl shadow-lg transform active:scale-95 transition-all disabled:opacity-50" onclick="handleColorClick(3)" disabled></button>
+                                </div>
+                                <div class="text-center">
+                                    <div id="sequenceStatus" class="text-lg font-semibold text-gray-700 mb-2">Başlamak için butona tıklayın</div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 max-w-xs mx-auto">
+                                        <div id="sequenceProgress" class="bg-purple-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Therapeutic Benefits Section -->
+    <section class="py-20 bg-therapy-green text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="font-serif text-3xl font-bold text-center mb-12">Terapötik Faydalar</h2>
+            
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="bg-white/10 backdrop-blur rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Bilişsel Rehabilitasyon</h3>
+                    <p class="text-sm opacity-80">Hafıza, dikkat, executive fonksiyonlar ve problem çözme becerilerini geliştirir.</p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                        <i class="fas fa-hand-paper"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Motor Gelişim</h3>
+                    <p class="text-sm opacity-80">İnce motor beceriler, kavrama kalıpları ve el becerisini destekler.</p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Görsel-Motor Entegrasyon</h3>
+                    <p class="text-sm opacity-80">Göz ve el koordinasyonu, uzamsal farkındalık ve görsel algıyı güçlendirir.</p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Motivasyon ve Katılım</h3>
+                    <p class="text-sm opacity-80">Oyunlaştırma ile tedavi uyumunu artırır ve içsel motivasyonu destekler.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center">
+                            <i class="fas fa-hands-holding-circle text-xl"></i>
+                        </div>
+                        <span class="font-serif text-2xl font-bold">Ergoterapi<span class="text-therapy-accent">TR</span></span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Türkiye'de ergoterapi mesleğinin tanıtımı ve gelişimi.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Hızlı Bağlantılar</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="index.html" class="hover:text-therapy-green transition-colors">Ana Sayfa</a></li>
+                        <li><a href="index.html#alanlar" class="hover:text-therapy-green transition-colors">Klinik Alanlar</a></li>
+                        <li><a href="index.html#degerlendirme" class="hover:text-therapy-green transition-colors">Değerlendirme</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lg mb-4">İletişim</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-envelope mr-2"></i> muratcoskun06@gmail.com</li>
+                        <li>
+                            <a href="https://wa.me/905067223289" target="_blank" class="flex items-center hover:text-whatsapp transition-colors">
+                                <i class="fab fa-whatsapp mr-2"></i> 0506 722 32 89
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Sosyal Medya</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-therapy-green transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-therapy-green transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-therapy-green transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2024 Ergoterapi Türkiye. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/905067223289?text=Merhaba,%20ergoterapi%20hakkında%20bilgi%20almak%20istiyorum." 
+       target="_blank" 
+       class="fixed bottom-6 right-6 w-14 h-14 bg-whatsapp rounded-full flex items-center justify-center text-white text-2xl shadow-2xl hover:scale-110 transition-transform z-50 animate-pulse">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Visitor Counter
+        (function() {
+            const counterKey = 'visitorCount';
+            const lastVisitKey = 'lastVisit';
+            const today = new Date().toDateString();
+            const lastVisit = localStorage.getItem(lastVisitKey);
+            
+            let count = parseInt(localStorage.getItem(counterKey)) || 0;
+            
+            if (lastVisit !== today) {
+                count++;
+                localStorage.setItem(counterKey, count);
+                localStorage.setItem(lastVisitKey, today);
+            }
+            
+            document.getElementById('visitorCount').textContent = count.toLocaleString('tr-TR');
+        })();
+
+        // Game 1: Memory Match
+        const memoryIcons = ['🧠', '💪', '👁️', '✋', '🦶', '❤️', '🦴', '🫁'];
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+
+        function initMemoryGame() {
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = '';
+            memoryCards = [...memoryIcons, ...memoryIcons].sort(() => Math.random() - 0.5);
+            flippedCards = [];
+            matchedPairs = 0;
+            moves = 0;
+            document.getElementById('memoryMoves').textContent = moves;
+            document.getElementById('memoryMatches').textContent = matchedPairs;
+            document.getElementById('memoryMessage').textContent = '';
+
+            memoryCards.forEach((icon, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center text-3xl shadow-lg relative';
+                card.dataset.index = index;
+                card.dataset.icon = icon;
+                card.innerHTML = `
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center backface-hidden">
+                        <i class="fas fa-question text-white text-2xl"></i>
+                    </div>
+                    <div class="absolute inset-0 bg-white rounded-xl flex items-center justify-center backface-hidden" style="transform: rotateY(180deg);">
+                        ${icon}
+                    </div>
+                `;
+                card.onclick = () => flipCard(card);
+                grid.appendChild(card);
+            });
+        }
+
+        function flipCard(card) {
+            if (flippedCards.length < 2 && !card.classList.contains('flipped') && !card.classList.contains('matched')) {
+                card.classList.add('flipped');
+                flippedCards.push(card);
+                
+                if (flippedCards.length === 2) {
+                    moves++;
+                    document.getElementById('memoryMoves').textContent = moves;
+                    checkMatch();
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.icon === card2.dataset.icon) {
+                setTimeout(() => {
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    matchedPairs++;
+                    document.getElementById('memoryMatches').textContent = matchedPairs;
+                    flippedCards = [];
+                    
+                    if (matchedPairs === memoryIcons.length) {
+                        document.getElementById('memoryMessage').textContent = '🎉 Tebrikler! Tüm eşleşmeleri tamamladınız!';
+                    }
+                }, 600);
+            } else {
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        function resetMemoryGame() {
+            initMemoryGame();
+        }
+
+        // Game 2: Pegboard
+        let selectedColor = 'red';
+        let pegScore = 0;
+        let targetPattern = [];
+
+        function initPegGame() {
+            const board = document.getElementById('pegBoard');
+            board.innerHTML = '';
+            pegScore = 0;
+            document.getElementById('pegScore').textContent = pegScore;
+            
+            // Create 5x5 grid
+            for (let i = 0; i < 25; i++) {
+                const hole = document.createElement('div');
+                hole.className = 'peg-hole w-12 h-12 bg-white rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer';
+                hole.dataset.index = i;
+                hole.onclick = () => placePeg(hole);
+                board.appendChild(hole);
+            }
+            
+            generateTargetPattern();
+        }
+
+        function generateTargetPattern() {
+            const colors = ['red', 'blue', 'green', 'yellow'];
+            targetPattern = [];
+            for (let i = 0; i < 5; i++) {
+                targetPattern.push(colors[Math.floor(Math.random() * colors.length)]);
+            }
+            
+            const targetText = targetPattern.map(c => ({
+                'red': '🔴', 'blue': '🔵', 'green': '🟢', 'yellow': '🟡'
+            })[c]).join(' ');
+            
+            document.getElementById('pegTarget').textContent = targetText;
+        }
+
+        function selectPegColor(color) {
+            selectedColor = color;
+            document.querySelectorAll('.game-canvas + div .rounded-full').forEach(el => {
+                el.style.transform = 'scale(1)';
+            });
+            event.target.style.transform = 'scale(1.3)';
+        }
+
+        function placePeg(hole) {
+            if (hole.dataset.filled) return;
+            
+            const colors = {
+                'red': 'bg-red-500',
+                'blue': 'bg-blue-500',
+                'green': 'bg-green-500',
+                'yellow': 'bg-yellow-500'
+            };
+            
+            hole.className = `peg-hole w-12 h-12 ${colors[selectedColor]} rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer shadow-inner`;
+            hole.dataset.filled = selectedColor;
+            
+            checkPegPattern();
+        }
+
+        function checkPegPattern() {
+            const holes = document.querySelectorAll('#pegBoard .peg-hole');
+            const filledHoles = Array.from(holes).filter(h => h.dataset.filled);
+            
+            if (filledHoles.length === 5) {
+                const userPattern = filledHoles.map(h => h.dataset.filled);
+                let correct = 0;
+                
+                userPattern.forEach((color, idx) => {
+                    if (color === targetPattern[idx]) correct++;
+                });
+                
+                pegScore = correct * 20;
+                document.getElementById('pegScore').textContent = pegScore;
+                
+                if (correct === 5) {
+                    document.getElementById('pegMessage').textContent = '🎉 Mükemmel! Deseni tam olarak oluşturdunuz!';
+                } else {
+                    document.getElementById('pegMessage').textContent = `${correct}/5 doğru. Tekrar deneyin!`;
+                }
+            }
+        }
+
+        function resetPegGame() {
+            initPegGame();
+            document.getElementById('pegMessage').textContent = '';
+        }
+
+        // Game 3: Tracing
+        let traceCanvas, traceCtx;
+        let isTracing = false;
+        let tracePath = [];
+        let currentLevel = 1;
+        let traceAccuracy = 0;
+
+        function initTraceGame() {
+            traceCanvas = document.getElementById('traceCanvas');
+            traceCtx = traceCanvas.getContext('2d');
+            
+            // Set canvas size
+            traceCanvas.width = traceCanvas.offsetWidth;
+            traceCanvas.height = 300;
+            
+            drawTraceShape();
+            
+            traceCanvas.addEventListener('mousedown', startTrace);
+            traceCanvas.addEventListener('mousemove', doTrace);
+            traceCanvas.addEventListener('mouseup', endTrace);
+            traceCanvas.addEventListener('touchstart', handleTouch);
+            traceCanvas.addEventListener('touchmove', handleTouch);
+            traceCanvas.addEventListener('touchend', endTrace);
+        }
+
+        function drawTraceShape() {
+            traceCtx.clearRect(0, 0, traceCanvas.width, traceCanvas.height);
+            traceCtx.strokeStyle = '#F59E0B';
+            traceCtx.lineWidth = 8;
+            traceCtx.lineCap = 'round';
+            traceCtx.setLineDash([10, 5]);
+            
+            const w = traceCanvas.width;
+            const h = traceCanvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+            
+            traceCtx.beginPath();
+            
+            if (currentLevel === 1) {
+                // Simple circle
+                traceCtx.arc(cx, cy, 80, 0, Math.PI * 2);
+            } else if (currentLevel === 2) {
+                // Figure 8
+                traceCtx.moveTo(cx - 50, cy);
+                traceCtx.bezierCurveTo(cx - 50, cy - 60, cx + 50, cy - 60, cx + 50, cy);
+                traceCtx.bezierCurveTo(cx + 50, cy + 60, cx - 50, cy + 60, cx - 50, cy);
+            } else {
+                // Spiral
+                for (let i = 0; i < 720; i++) {
+                    const angle = i * Math.PI / 180;
+                    const radius = 20 + i / 10;
+                    const x = cx + radius * Math.cos(angle);
+                    const y = cy + radius * Math.sin(angle);
+                    if (i === 0) traceCtx.moveTo(x, y);
+                    else traceCtx.lineTo(x, y);
+                }
+            }
+            
+            traceCtx.stroke();
+            traceCtx.setLineDash([]);
+        }
+
+        function startTrace(e) {
+            isTracing = true;
+            tracePath = [];
+            const rect = traceCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            tracePath.push({x, y});
+            
+            traceCtx.beginPath();
+            traceCtx.moveTo(x, y);
+            traceCtx.strokeStyle = '#2D5A4A';
+            traceCtx.lineWidth = 4;
+        }
+
+        function doTrace(e) {
+            if (!isTracing) return;
+            const rect = traceCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            tracePath.push({x, y});
+            
+            traceCtx.lineTo(x, y);
+            traceCtx.stroke();
+        }
+
+        function endTrace() {
+            if (!isTracing) return;
+            isTracing = false;
+            calculateTraceAccuracy();
+        }
+
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 'mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            traceCanvas.dispatchEvent(mouseEvent);
+            if (e.type === 'touchend') endTrace();
+        }
+
+        function calculateTraceAccuracy() {
+            // Simple accuracy calculation based on path length and proximity to center
+            if (tracePath.length < 10) {
+                traceAccuracy = 0;
+            } else {
+                const w = traceCanvas.width;
+                const h = traceCanvas.height;
+                const cx = w / 2;
+                const cy = h / 2;
+                
+                let totalDeviation = 0;
+                tracePath.forEach(point => {
+                    const dist = Math.sqrt(Math.pow(point.x - cx, 2) + Math.pow(point.y - cy, 2));
+                    const expectedRadius = currentLevel === 1 ? 80 : 50;
+                    totalDeviation += Math.abs(dist - expectedRadius);
+                });
+                
+                const avgDeviation = totalDeviation / tracePath.length;
+                traceAccuracy = Math.max(0, Math.min(100, 100 - (avgDeviation / 2)));
+            }
+            
+            document.getElementById('traceAccuracy').textContent = Math.round(traceAccuracy) + '%';
+            
+            if (traceAccuracy > 70) {
+                document.getElementById('traceMessage').textContent = '🎉 Harika! Çok iyi takip ettiniz!';
+            } else if (traceAccuracy > 40) {
+                document.getElementById('traceMessage').textContent = 'İyi! Biraz daha pratik yapın.';
+            } else {
+                document.getElementById('traceMessage').textContent = 'Tekrar deneyin. Çizgiyi yavaş takip edin.';
+            }
+        }
+
+        function setTraceLevel(level) {
+            currentLevel = level;
+            document.getElementById('traceLevel').textContent = level;
+            resetTraceGame();
+        }
+
+        function resetTraceGame() {
+            tracePath = [];
+            traceAccuracy = 0;
+            document.getElementById('traceAccuracy').textContent = '0%';
+            document.getElementById('traceMessage').textContent = '';
+            drawTraceShape();
+        }
+
+        // Game 4: Color Sequence (Simon Says)
+        let sequence = [];
+        let playerSequence = [];
+        let sequenceScore = 0;
+        let sequenceStreak = 0;
+        let isPlayingSequence = false;
+        const colorButtons = [
+            { color: '#EF4444', highlight: '#FCA5A5' },  // Red
+            { color: '#3B82F6', highlight: '#93C5FD' },  // Blue
+            { color: '#10B981', highlight: '#6EE7B7' },  // Green
+            { color: '#F59E0B', highlight: '#FCD34D' }   // Yellow
+        ];
+
+        function startSequenceGame() {
+            sequence = [];
+            playerSequence = [];
+            sequenceScore = 0;
+            sequenceStreak = 0;
+            updateSequenceUI();
+            document.getElementById('sequenceStatus').textContent = 'Diziyi izleyin...';
+            setTimeout(nextSequenceRound, 1000);
+        }
+
+        function nextSequenceRound() {
+            playerSequence = [];
+            sequence.push(Math.floor(Math.random() * 4));
+            playSequence();
+        }
+
+        function playSequence() {
+            isPlayingSequence = true;
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i >= sequence.length) {
+                    clearInterval(interval);
+                    isPlayingSequence = false;
+                    document.getElementById('sequenceStatus').textContent = 'Sıra sizde!';
+                    enableColorButtons(true);
+                    return;
+                }
+                flashColor(sequence[i]);
+                i++;
+            }, 800);
+        }
+
+        function flashColor(index) {
+            const btn = document.getElementById(`colorBtn${index}`);
+            const originalColor = colorButtons[index].color;
+            const highlightColor = colorButtons[index].highlight;
+            
+            btn.style.backgroundColor = highlightColor;
+            btn.style.transform = 'scale(1.1)';
+            btn.style.boxShadow = `0 0 30px ${highlightColor}`;
+            
+            setTimeout(() => {
+                btn.style.backgroundColor = originalColor;
+                btn.style.transform = 'scale(1)';
+                btn.style.boxShadow = '';
+            }, 400);
+        }
+
+        function handleColorClick(index) {
+            if (isPlayingSequence) return;
+            
+            flashColor(index);
+            playerSequence.push(index);
+            
+            // Check if correct so far
+            const currentIndex = playerSequence.length - 1;
+            if (playerSequence[currentIndex] !== sequence[currentIndex]) {
+                // Wrong!
+                document.getElementById('sequenceStatus').textContent = '❌ Yanlış! Tekrar başlayın.';
+                sequenceStreak = 0;
+                updateSequenceUI();
+                enableColorButtons(false);
+                return;
+            }
+            
+            // Check if round complete
+            if (playerSequence.length === sequence.length) {
+                sequenceScore += sequence.length * 10;
+                sequenceStreak++;
+                updateSequenceUI();
+                enableColorButtons(false);
+                document.getElementById('sequenceStatus').textContent = '✅ Doğru! Sonraki round...';
+                setTimeout(nextSequenceRound, 1500);
+            }
+        }
+
+        function enableColorButtons(enable) {
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`colorBtn${i}`).disabled = !enable;
+            }
+        }
+
+        function updateSequenceUI() {
+            document.getElementById('sequenceScore').textContent = sequenceScore;
+            document.getElementById('sequenceStreak').textContent = sequenceStreak;
+            const progress = Math.min(100, (sequence.length / 10) * 100);
+            document.getElementById('sequenceProgress').style.width = progress + '%';
+        }
+
+        // Initialize all games
+        document.addEventListener('DOMContentLoaded', () => {
+            initMemoryGame();
+            initPegGame();
+            initTraceGame();
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
+</html>
