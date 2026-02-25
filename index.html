@@ -20,6 +20,7 @@
                         'therapy-light': '#E8F5E9',
                         'therapy-accent': '#FF6B6B',
                         'sand': '#F5F1E8',
+                        'whatsapp': '#25D366',
                     },
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
@@ -64,6 +65,14 @@
         }
         .therapy-card:hover {
             transform: translateY(-10px) rotate(1deg);
+        }
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            transition: all 0.3s ease;
+        }
+        .whatsapp-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
         }
     </style>
 </head>
@@ -654,6 +663,27 @@
         </div>
     </section>
 
+    <!-- WhatsApp Contact Section -->
+    <section class="py-16 bg-gradient-to-r from-whatsapp to-green-600 text-white">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="scroll-reveal">
+                <i class="fab fa-whatsapp text-6xl mb-4 animate-bounce"></i>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">WhatsApp'tan Ulaşın</h2>
+                <p class="text-lg mb-8 opacity-90">Ergoterapi hakkında bilgi almak veya randevu talep etmek için hemen WhatsApp üzerinden bize yazın.</p>
+                
+                <a href="https://wa.me/905067223289?text=Merhaba,%20ergoterapi%20hakkında%20bilgi%20almak%20istiyorum." 
+                   target="_blank" 
+                   class="inline-flex items-center space-x-3 bg-white text-whatsapp px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl">
+                    <i class="fab fa-whatsapp text-2xl"></i>
+                    <span>0506 722 32 89</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                
+                <p class="mt-4 text-sm opacity-75">7/24 WhatsApp hattımızdan bize ulaşabilirsiniz</p>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-6">
@@ -692,9 +722,18 @@
 
                 <div>
                     <h4 class="font-bold text-lg mb-4">İletişim</h4>
-                    <ul class="space-y-2 text-gray-400">
+                    <ul class="space-y-3 text-gray-400">
                         <li><i class="fas fa-envelope mr-2"></i> info@ergoterapi-tr.org</li>
-                        <li><i class="fas fa-phone mr-2"></i> +90 506 722 32 89</li>
+                        <li>
+                            <a href="https://wa.me/905067223289?text=Merhaba,%20ergoterapi%20hakkında%20bilgi%20almak%20istiyorum." 
+                               target="_blank" 
+                               class="flex items-center hover:text-whatsapp transition-colors group">
+                                <div class="w-8 h-8 bg-whatsapp rounded-full flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
+                                    <i class="fab fa-whatsapp text-white text-sm"></i>
+                                </div>
+                                <span>0506 722 32 89</span>
+                            </a>
+                        </li>
                         <li><i class="fas fa-map-marker-alt mr-2"></i> Ankara, Türkiye</li>
                     </ul>
                     <div class="flex space-x-4 mt-4">
@@ -716,6 +755,14 @@
             </div>
         </div>
     </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/905067223289?text=Merhaba,%20ergoterapi%20hakkında%20bilgi%20almak%20istiyorum." 
+       target="_blank" 
+       class="fixed bottom-6 right-6 w-14 h-14 bg-whatsapp rounded-full flex items-center justify-center text-white text-2xl shadow-2xl hover:scale-110 transition-transform z-50 animate-pulse-slow"
+       title="WhatsApp'tan Yazın">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <script>
         // Mobile Menu Toggle
@@ -839,5 +886,4 @@
         });
     </script>
 </body>
-
 </html>
