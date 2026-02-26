@@ -1,1588 +1,382 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ergoterapi Türkiye - İyileşmenin Sanatı</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        serif: ['Playfair Display', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        'therapy-green': '#2D5A4A',
-                        'therapy-light': '#E8F5E9',
-                        'therapy-accent': '#FF6B6B',
-                        'therapy-dark': '#1B4332',
-                        'sand': '#F5F1E8',
-                        'whatsapp': '#25D366',
-                        'neuro': '#3B82F6',
-                        'pediatric': '#F59E0B',
-                        'mental': '#8B5CF6',
-                        'ortho': '#EC4899',
-                        'geri': '#10B981',
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 20s linear infinite',
-                        'draw': 'draw 2s ease-in-out forwards',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        draw: {
-                            '0%': { strokeDasharray: '1000', strokeDashoffset: '1000' },
-                            '100%': { strokeDasharray: '1000', strokeDashoffset: '0' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .hero-pattern {
-            background-image: radial-gradient(circle at 1px 1px, rgba(45, 90, 74, 0.15) 1px, transparent 0);
-            background-size: 40px 40px;
-        }
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-        .scroll-reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        /* SVG Animations */
-        .brain-path { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw 3s ease-in-out forwards; }
-        .hand-path { stroke-dasharray: 500; stroke-dashoffset: 500; animation: draw 2s ease-in-out 0.5s forwards; }
-        .pulse-circle { animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }
-        @keyframes pulse-ring {
-            0% { transform: scale(0.33); opacity: 1; }
-            80%, 100% { opacity: 0; transform: scale(1.5); }
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #2D5A4A; border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: #1B4332; }
-        
-        /* Interactive Cards */
-        .disease-card { transition: all 0.3s ease; }
-        .disease-card:hover { transform: translateX(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        
-        /* Assessment Checkmarks */
-        .assessment-item { position: relative; padding-left: 30px; }
-        .assessment-item::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: #2D5A4A;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-        
-        /* Infographic Styles */
-        .info-graphic {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        .info-graphic::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 10px,
-                rgba(255,255,255,0.05) 10px,
-                rgba(255,255,255,0.05) 20px
-            );
-            animation: slide 20s linear infinite;
-        }
-        @keyframes slide { 0% { transform: translate(0,0); } 100% { transform: translate(50px,50px); } }
-        
-        /* Timeline */
-        .timeline-node {
-            position: relative;
-            padding-left: 40px;
-        }
-        .timeline-node::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #2D5A4A;
-        }
-        .timeline-dot {
-            position: absolute;
-            left: 8px;
-            top: 8px;
-            width: 16px;
-            height: 16px;
-            background: #2D5A4A;
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 0 0 3px #2D5A4A;
-        }
+<!-- Yeni Bölüm: Video & Animasyon Eğitim Sayfası -->
+<!-- Ana Navigationdan sonra ve Hero Section öncesine eklenebilir -->
 
-        /* Visitor Counter */
-        .visitor-counter {
-            position: fixed;
-            bottom: 6px;
-            left: 6px;
-            background: rgba(45, 90, 74, 0.9);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            z-index: 50;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
-        }
-        .visitor-counter i {
-            margin-right: 8px;
-        }
+<!-- Video Eğitim Sayfası Bölümü -->
+<section class="py-20 bg-gradient-to-br from-green-50 to-green-100">
+    <div class="max-w-7xl mx-auto px-6">
+        <!-- Başlık -->
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center px-4 py-2 bg-geri/10 text-geri rounded-full text-sm font-semibold mb-6">
+                <i class="fas fa-video mr-2"></i>Görsel Eğitim
+            </div>
+            <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Video Rehberleri & Animasyonlar
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Adım adım, görsel olarak anlatılan egzersiz ve terapötik aktiviteleri öğrenin
+            </p>
+        </div>
 
-        /* Game Styles */
-        .game-card {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-        .game-canvas {
-            border-radius: 12px;
-            background: white;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .memory-card {
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
-        .memory-card.flipped {
-            transform: rotateY(180deg);
-        }
-        .memory-card.matched {
-            animation: matchPulse 0.6s ease;
-        }
-        @keyframes matchPulse {
-            0%, 100% { transform: scale(1) rotateY(180deg); }
-            50% { transform: scale(1.1) rotateY(180deg); }
-        }
-        .peg-hole {
-            transition: all 0.3s ease;
-        }
-        .peg-hole:hover {
-            background-color: rgba(45, 90, 74, 0.1);
-        }
-        .color-target {
-            animation: colorPulse 2s infinite;
-        }
-        @keyframes colorPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        .tracing-path {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: trace 3s linear infinite;
-        }
-        @keyframes trace {
-            to { stroke-dashoffset: 0; }
-        }
-    </style>
-<base target="_blank">
-</head>
-<body class="font-sans bg-sand text-gray-800 overflow-x-hidden">
+        <!-- Video Kartları Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Video 1: Hafıza Oyunu Rehberi -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
+                <div class="relative bg-gradient-to-br from-blue-400 to-blue-600 h-48 flex items-center justify-center overflow-hidden">
+                    <!-- Video Placeholder -->
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Hafıza Eşleştirme Oyunu" allowfullscreen="" loading="lazy" style="border:none;"></iframe>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-neuro/20 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-brain text-neuro"></i>
+                        </div>
+                        <h3 class="font-bold text-xl text-gray-900">Hafıza Oyunu Rehberi</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Hafıza oyununu nasıl oynayacağınızı ve bilişsel faydalarını öğrenin.
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Bilişsel</span>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full">5 dakika</span>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Visitor Counter - Sol Alt Köşe -->
-    <div class="visitor-counter">
-        <i class="fas fa-eye"></i>
-        <span id="visitorCount">0</span> ziyaretçi
+            <!-- Video 2: Motor Beceriler Egzersiz -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
+                <div class="relative bg-gradient-to-br from-pink-400 to-pink-600 h-48 flex items-center justify-center overflow-hidden">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Pegboard Egzersizleri" allowfullscreen="" loading="lazy" style="border:none;"></iframe>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-ortho/20 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-hand text-ortho"></i>
+                        </div>
+                        <h3 class="font-bold text-xl text-gray-900">Pegboard Egzersizleri</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        İnce motor becerilerinizi geliştirmek için pegboard egzersizleri.
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-pink-100 text-pink-800 px-3 py-1 rounded-full">Motor</span>
+                        <span class="text-xs bg-pink-100 text-pink-800 px-3 py-1 rounded-full">8 dakika</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 3: El-Göz Koordinasyonu -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
+                <div class="relative bg-gradient-to-br from-yellow-400 to-yellow-600 h-48 flex items-center justify-center overflow-hidden">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="İz Takibi Egzersizi" allowfullscreen="" loading="lazy" style="border:none;"></iframe>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-pediatric/20 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-route text-pediatric"></i>
+                        </div>
+                        <h3 class="font-bold text-xl text-gray-900">İz Takibi Egzersizi</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        El-göz koordinasyonunu geliştirmek için görsel izleme aktiviteleri.
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Koordinasyon</span>
+                        <span class="text-xs bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">6 dakika</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 4: Renk Dizisi Oyunu -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
+                <div class="relative bg-gradient-to-br from-purple-400 to-purple-600 h-48 flex items-center justify-center overflow-hidden">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Renk Dizisi Oyunu" allowfullscreen="" loading="lazy" style="border:none;"></iframe>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-mental/20 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-lightbulb text-mental"></i>
+                        </div>
+                        <h3 class="font-bold text-xl text-gray-900">Renk Dizisi Oyunu</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Dikkat ve çalışma belleğini geliştiren renkli dizi oyunu.
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Dikkat</span>
+                        <span class="text-xs bg-purple-100 text-purple-800 px-3 py-1 rounded-full">7 dakika</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 5: Terapötik İpuçları -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
+                <div class="relative bg-gradient-to-br from-red-400 to-red-600 h-48 flex items-center justify-center overflow-hidden">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Terapötik İpuçları" allowfullscreen="" loading="lazy" style="border:none;"></iframe>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-therapy-accent/20 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-lightbulb text-therapy-accent"></i>
+                        </div>
+                        <h3 class="font-bold text-xl text-gray-900">Terapötik İpuçları</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Evde yapabileceğiniz terapötik aktiviteleri ve ipuçlarını öğrenin.
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-red-100 text-red-800 px-3 py-1 rounded-full">Rehber</span>
+                        <span class="text-xs bg-red-100 text-red-800 px-3 py-1 rounded-full">10 dakika</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 6: Animasyon - Nörolojik Rehabilitasyon -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
+                <div class="relative bg-gradient-to-br from-teal-400 to-teal-600 h-48 flex items-center justify-center overflow-hidden">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Nörolojik Rehabilitasyon" allowfullscreen="" loading="lazy" style="border:none;"></iframe>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-teal-500/20 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-brain text-teal-600"></i>
+                        </div>
+                        <h3 class="font-bold text-xl text-gray-900">Nörolojik Rehabilitasyon</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        İnme sonrası ve nörolojik hastalıklarda terapötik yaklaşımlar.
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-teal-100 text-teal-800 px-3 py-1 rounded-full">Nöro</span>
+                        <span class="text-xs bg-teal-100 text-teal-800 px-3 py-1 rounded-full">12 dakika</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
+</section>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
-        <div class="glass-effect px-6 py-4 bg-white/90">
-            <div class="max-w-7xl mx-auto flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center text-white animate-pulse-slow">
-                        <i class="fas fa-hands-holding-circle text-xl"></i>
-                    </div>
-                    <span class="font-serif text-2xl font-bold text-therapy-green">Ergoterapi<span class="text-therapy-accent">TR</span></span>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#tarihce" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Tarihçe</a>
-                    <a href="#turkiye" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Türkiye'de</a>
-                    <a href="#alanlar" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Klinik Alanlar</a>
-                    <a href="#degerlendirme" class="text-gray-700 hover:text-therapy-green font-medium transition-colors">Değerlendirme</a>
-                    <a href="oyunlar.html" class="text-therapy-green font-bold border-2 border-therapy-green px-4 py-2 rounded-full hover:bg-therapy-green hover:text-white transition-all">
-                        <i class="fas fa-gamepad mr-2"></i>Therapeutic Games
-                    </a>
-                </div>
-                <button class="md:hidden text-therapy-green text-2xl" onclick="toggleMenu()">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
+<!-- Animasyon İnteraktif Bölümü -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                İnteraktif Animasyonlar
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                İnsan vücudunun anatomisi ve terapötik hareketi anlayan animasyonlar
+            </p>
         </div>
-    </nav>
 
-    <!-- Hero Section with Animated SVG -->
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-gradient-to-br from-therapy-light via-white to-sand">
-        <div class="absolute inset-0 hero-pattern opacity-30"></div>
-        
-        <!-- Animated Background Blobs -->
-        <div class="absolute top-20 left-10 w-72 h-72 bg-therapy-green/20 rounded-full blur-3xl animate-float"></div>
-        <div class="absolute bottom-20 right-10 w-96 h-96 bg-therapy-accent/20 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
-        
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
-            <!-- Left Content -->
-            <div class="space-y-8 animate-fade-in-up">
-                <div class="inline-flex items-center px-4 py-2 bg-therapy-green/10 text-therapy-green rounded-full text-sm font-semibold">
-                    <i class="fas fa-star mr-2"></i>1917'den Günümüze
+        <div class="grid md:grid-cols-2 gap-8">
+            
+            <!-- Animasyon 1: El Anatomisi -->
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 shadow-lg">
+                <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center text-white mr-4">
+                        <i class="fas fa-hand-paper text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-2xl text-gray-900">El Anatomisi</h3>
                 </div>
-                <h1 class="font-serif text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
-                    İyileşmenin <span class="text-therapy-green italic">Sanatı</span><br>
-                    <span class="text-3xl md:text-5xl font-normal text-gray-600">Ergoterapi</span>
-                </h1>
-                <p class="text-xl text-gray-600 leading-relaxed max-w-lg">
-                    Bireylerin günlük yaşam aktivitelerine katılımlarını sağlamak için terapötik aktiviteleri kullanan bilimsel ve profesyonel bir disiplin.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <button onclick="scrollToSection('alanlar')" class="px-8 py-4 bg-therapy-green text-white rounded-full font-semibold hover:bg-therapy-green/90 transition-all transform hover:scale-105 shadow-lg">
-                        Klinik Alanları Keşfet <i class="fas fa-arrow-right ml-2"></i>
+                <div class="bg-white rounded-2xl p-8 mb-6 min-h-80 flex items-center justify-center overflow-hidden">
+                    <!-- SVG Animasyon: El -->
+                    <svg viewBox="0 0 200 300" class="w-full h-full max-w-64" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Avuç İçi -->
+                        <ellipse cx="100" cy="150" rx="40" ry="60" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                        
+                        <!-- Parmaklar -->
+                        <g id="thumb" class="animate-bounce">
+                            <rect x="50" y="80" width="12" height="35" rx="6" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                            <circle cx="56" cy="70" r="7" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                        </g>
+                        
+                        <g id="finger1" style="animation: wave 1.5s ease-in-out infinite;">
+                            <rect x="75" y="60" width="12" height="50" rx="6" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                            <circle cx="81" cy="50" r="7" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                        </g>
+                        
+                        <g id="finger2" style="animation: wave 1.5s ease-in-out 0.1s infinite;">
+                            <rect x="90" y="50" width="12" height="60" rx="6" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                            <circle cx="96" cy="40" r="7" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                        </g>
+                        
+                        <g id="finger3" style="animation: wave 1.5s ease-in-out 0.2s infinite;">
+                            <rect x="105" y="50" width="12" height="60" rx="6" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                            <circle cx="111" cy="40" r="7" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                        </g>
+                        
+                        <g id="finger4" style="animation: wave 1.5s ease-in-out 0.3s infinite;">
+                            <rect x="120" y="60" width="12" height="50" rx="6" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                            <circle cx="126" cy="50" r="7" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="font-bold text-lg text-gray-900">Parmak Hareketi Animasyonu</h4>
+                    <p class="text-gray-600 text-sm">
+                        El ve parmak eklemlerinin nasıl çalıştığını görselleştirin. Motor kontrol ve kavrama kalıplarını anlamak için interaktif animasyon.
+                    </p>
+                    <button class="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-semibold">
+                        <i class="fas fa-play mr-2"></i>Animasyonu Oynat
                     </button>
-                    <a href="oyunlar.html" class="px-8 py-4 border-2 border-therapy-green text-therapy-green rounded-full font-semibold hover:bg-therapy-green hover:text-white transition-all flex items-center">
-                        <i class="fas fa-gamepad mr-2"></i>Terapötik Oyunlar
-                    </a>
                 </div>
             </div>
-            
-            <!-- Right: Animated SVG Illustration -->
-            <div class="relative">
-                <div class="absolute inset-0 bg-gradient-to-tr from-therapy-green/20 to-therapy-accent/20 rounded-3xl transform rotate-3"></div>
-                <div class="relative bg-white p-8 rounded-3xl shadow-2xl">
-                    <!-- Interactive SVG -->
-                    <svg viewBox="0 0 400 300" class="w-full h-auto">
-                        <!-- Brain Network -->
-                        <g class="brain-network">
-                            <circle cx="200" cy="100" r="60" fill="none" stroke="#3B82F6" stroke-width="2" class="brain-path" opacity="0.3"/>
-                            <circle cx="200" cy="100" r="45" fill="none" stroke="#3B82F6" stroke-width="2" class="brain-path" opacity="0.5"/>
-                            <circle cx="200" cy="100" r="30" fill="#3B82F6" opacity="0.1"/>
-                            
-                            <!-- Neural Connections -->
-                            <line x1="200" y1="40" x2="200" y2="20" stroke="#3B82F6" stroke-width="2" class="brain-path"/>
-                            <line x1="260" y1="100" x2="280" y2="100" stroke="#3B82F6" stroke-width="2" class="brain-path"/>
-                            <line x1="200" y1="160" x2="200" y2="180" stroke="#3B82F6" stroke-width="2" class="brain-path"/>
-                            <line x1="140" y1="100" x2="120" y2="100" stroke="#3B82F6" stroke-width="2" class="brain-path"/>
-                            
-                            <!-- Nodes -->
-                            <circle cx="200" cy="20" r="8" fill="#3B82F6" class="pulse-circle"/>
-                            <circle cx="280" cy="100" r="8" fill="#F59E0B" class="pulse-circle" style="animation-delay: 0.5s"/>
-                            <circle cx="200" cy="180" r="8" fill="#10B981" class="pulse-circle" style="animation-delay: 1s"/>
-                            <circle cx="120" cy="100" r="8" fill="#8B5CF6" class="pulse-circle" style="animation-delay: 1.5s"/>
-                        </g>
+
+            <!-- Animasyon 2: Beyin Fonksiyonları -->
+            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-3xl p-8 shadow-lg">
+                <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 bg-purple-500 rounded-full flex items-center justify-center text-white mr-4">
+                        <i class="fas fa-brain text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-2xl text-gray-900">Beyin Fonksiyonları</h3>
+                </div>
+                <div class="bg-white rounded-2xl p-8 mb-6 min-h-80 flex items-center justify-center overflow-hidden">
+                    <!-- SVG Animasyon: Beyin -->
+                    <svg viewBox="0 0 240 200" class="w-full h-full max-w-72" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Beyin Genel Şekli -->
+                        <ellipse cx="120" cy="100" rx="80" ry="70" fill="#E8D5F2" stroke="#8B5CF6" stroke-width="2"/>
                         
-                        <!-- Hands Doing Therapy -->
-                        <g transform="translate(100, 150)">
-                            <!-- Left Hand -->
-                            <path d="M50,80 Q40,60 50,40 Q60,20 80,30 Q100,40 90,60 Q80,80 70,90" 
-                                  fill="none" stroke="#2D5A4A" stroke-width="3" class="hand-path"/>
-                            <!-- Right Hand -->
-                            <path d="M150,80 Q160,60 150,40 Q140,20 120,30 Q100,40 110,60 Q120,80 130,90" 
-                                  fill="none" stroke="#2D5A4A" stroke-width="3" class="hand-path"/>
-                            <!-- Activity between hands -->
-                            <circle cx="100" cy="60" r="15" fill="#FF6B6B" opacity="0.6" class="animate-pulse"/>
-                            <text x="100" y="65" text-anchor="middle" fill="white" font-size="12" font-weight="bold">ET</text>
-                        </g>
+                        <!-- Sol Lob -->
+                        <circle cx="80" cy="80" r="35" fill="none" stroke="#8B5CF6" stroke-width="2" style="animation: pulse 2s ease-in-out infinite;"/>
+                        <text x="80" y="85" text-anchor="middle" class="text-xs font-bold fill-purple-700">Dil</text>
                         
-                        <!-- Icons around -->
-                        <g class="floating-icons">
-                            <circle cx="50" cy="250" r="20" fill="#E8F5E9" stroke="#2D5A4A" stroke-width="2"/>
-                            <text x="50" y="255" text-anchor="middle" fill="#2D5A4A" font-size="16">🧠</text>
-                            
-                            <circle cx="350" cy="250" r="20" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
-                            <text x="350" y="255" text-anchor="middle" fill="#F59E0B" font-size="16">👶</text>
-                            
-                            <circle cx="50" cy="50" r="20" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
-                            <text x="50" y="55" text-anchor="middle" fill="#8B5CF6" font-size="16">💚</text>
-                            
-                            <circle cx="350" cy="50" r="20" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
-                            <text x="350" y="55" text-anchor="middle" fill="#EC4899" font-size="16">🦴</text>
-                        </g>
-                    </svg>
-                    
-                    <!-- Stats Grid -->
-                    <div class="grid grid-cols-2 gap-4 mt-6">
-                        <div class="bg-blue-50 p-3 rounded-xl text-center">
-                            <div class="text-2xl font-bold text-blue-600">40+</div>
-                            <div class="text-xs text-gray-600">Üniversite</div>
-                        </div>
-                        <div class="bg-green-50 p-3 rounded-xl text-center">
-                            <div class="text-2xl font-bold text-green-600">5000+</div>
-                            <div class="text-xs text-gray-600">Ergoterapist</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Infographic: Ergoterapi Süreci -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16 scroll-reveal">
-                <h2 class="font-serif text-4xl font-bold text-gray-900 mb-4">Ergoterapi Süreci</h2>
-                <p class="text-gray-600">Birey merkezli değerlendirme ve tedavi döngüsü</p>
-            </div>
-            
-            <div class="relative">
-                <!-- Process Flow -->
-                <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-4">
-                    <!-- Step 1 -->
-                    <div class="flex-1 bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl text-center relative group hover:scale-105 transition-transform">
-                        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg">
-                            <i class="fas fa-clipboard-list"></i>
-                        </div>
-                        <h3 class="font-bold text-lg text-gray-900 mb-2">1. Değerlendirme</h3>
-                        <p class="text-sm text-gray-600">COPM, fonksiyonel analiz, çevre değerlendirmesi</p>
-                        <div class="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-2xl text-gray-400">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 2 -->
-                    <div class="flex-1 bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-2xl text-center relative group hover:scale-105 transition-transform">
-                        <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg">
-                            <i class="fas fa-bullseye"></i>
-                        </div>
-                        <h3 class="font-bold text-lg text-gray-900 mb-2">2. Hedef Belirleme</h3>
-                        <p class="text-sm text-gray-600">Birey odaklı SMART hedefler, önceliklendirme</p>
-                        <div class="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-2xl text-gray-400">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 3 -->
-                    <div class="flex-1 bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-2xl text-center relative group hover:scale-105 transition-transform">
-                        <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg">
-                            <i class="fas fa-hands"></i>
-                        </div>
-                        <h3 class="font-bold text-lg text-gray-900 mb-2">3. Müdahale</h3>
-                        <p class="text-sm text-gray-600">Aktivite tabanlı terapi, adaptasyon, eğitim</p>
-                        <div class="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-2xl text-gray-400">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 4 -->
-                    <div class="flex-1 bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-2xl text-center group hover:scale-105 transition-transform">
-                        <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h3 class="font-bold text-lg text-gray-900 mb-2">4. Sonuç Değerlendirme</h3>
-                        <p class="text-sm text-gray-600">Fonksiyonel ölçüm, hedef revizyonu</p>
-                    </div>
-                </div>
-                
-                <!-- Circular Arrow for Mobile -->
-                <div class="md:hidden flex justify-center mt-8">
-                    <div class="animate-spin-slow">
-                        <i class="fas fa-sync-alt text-4xl text-therapy-green"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Detailed Clinical Areas with Visual Icons -->
-    <section id="alanlar" class="py-24 bg-sand">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16 scroll-reveal">
-                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-6">Klinik Uygulama Alanları</h2>
-                <div class="w-24 h-1 bg-therapy-green mx-auto rounded-full mb-6"></div>
-                <p class="text-xl text-gray-600">Hastalıklara özel ergoterapi değerlendirme ve tedavi yaklaşımları</p>
-            </div>
-
-            <!-- Visual Tab Navigation -->
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12 scroll-reveal">
-                <button onclick="showTab('noroloji')" class="tab-btn active p-6 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all text-center border-2 border-transparent hover:border-neuro" data-tab="noroloji">
-                    <div class="w-16 h-16 bg-neuro/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i class="fas fa-brain text-3xl text-neuro"></i>
-                    </div>
-                    <span class="font-bold text-gray-800">Nörolojik</span>
-                </button>
-                
-                <button onclick="showTab('pediatri')" class="tab-btn p-6 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all text-center border-2 border-transparent hover:border-pediatric" data-tab="pediatri">
-                    <div class="w-16 h-16 bg-pediatric/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i class="fas fa-child text-3xl text-pediatric"></i>
-                    </div>
-                    <span class="font-bold text-gray-800">Pediatrik</span>
-                </button>
-                
-                <button onclick="showTab('mental')" class="tab-btn p-6 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all text-center border-2 border-transparent hover:border-mental" data-tab="mental">
-                    <div class="w-16 h-16 bg-mental/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i class="fas fa-heart text-3xl text-mental"></i>
-                    </div>
-                    <span class="font-bold text-gray-800">Mental Sağlık</span>
-                </button>
-                
-                <button onclick="showTab('ortopedi')" class="tab-btn p-6 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all text-center border-2 border-transparent hover:border-ortho" data-tab="ortopedi">
-                    <div class="w-16 h-16 bg-ortho/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i class="fas fa-hand text-3xl text-ortho"></i>
-                    </div>
-                    <span class="font-bold text-gray-800">Ortopedik</span>
-                </button>
-                
-                <button onclick="showTab('geriatri')" class="tab-btn p-6 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all text-center border-2 border-transparent hover:border-geri" data-tab="geriatri">
-                    <div class="w-16 h-16 bg-geri/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i class="fas fa-user-clock text-3xl text-geri"></i>
-                    </div>
-                    <span class="font-bold text-gray-800">Geriatri</span>
-                </button>
-            </div>
-
-            <!-- Nörolojik Content with Charts -->
-            <div id="noroloji" class="tab-content active">
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-neuro to-blue-600 p-8 text-white relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20"></div>
-                        <div class="relative z-10 flex items-center">
-                            <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mr-6">
-                                <i class="fas fa-brain text-4xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-serif text-3xl font-bold mb-2">Nörolojik Rehabilitasyon</h3>
-                                <p class="opacity-90">Merkezi sinir sistemi hasarlarında fonksiyonel bağımsızlığı yeniden kazanma</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="p-8">
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <!-- İnme with Progress Chart -->
-                            <div class="disease-card bg-blue-50 p-6 rounded-2xl border-l-4 border-neuro">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-neuro rounded-full flex items-center justify-center text-white mr-4">
-                                        <i class="fas fa-heart-pulse"></i>
-                                    </div>
-                                    <h4 class="font-bold text-xl text-gray-900">İnme (Stroke)</h4>
-                                </div>
-                                
-                                <!-- Mini Chart -->
-                                <div class="bg-white p-4 rounded-lg mb-4">
-                                    <canvas id="strokeChart" width="300" height="150"></canvas>
-                                    <p class="text-xs text-center text-gray-500 mt-2">Fonksiyonel İyileşme Eğrisi (Aylar)</p>
-                                </div>
-                                
-                                <div class="space-y-3">
-                                    <details class="group">
-                                        <summary class="flex items-center justify-between cursor-pointer bg-white p-3 rounded-lg hover:bg-blue-50 transition-colors">
-                                            <span class="font-semibold text-neuro">Değerlendirme Araçları</span>
-                                            <i class="fas fa-chevron-down transform group-open:rotate-180 transition-transform"></i>
-                                        </summary>
-                                        <ul class="mt-2 space-y-1 text-sm text-gray-700 pl-4">
-                                            <li class="assessment-item">Fugl-Meyer Assessment (Motor fonksiyon)</li>
-                                            <li class="assessment-item">Barthel Index (Günlük yaşam)</li>
-                                            <li class="assessment-item">MMSE / MoCA (Bilişsel)</li>
-                                            <li class="assessment-item">Nine-Hole Peg Test (El inceliği)</li>
-                                        </ul>
-                                    </details>
-                                    
-                                    <details class="group">
-                                        <summary class="flex items-center justify-between cursor-pointer bg-white p-3 rounded-lg hover:bg-blue-50 transition-colors">
-                                            <span class="font-semibold text-neuro">Tedavi Yaklaşımları</span>
-                                            <i class="fas fa-chevron-down transform group-open:rotate-180 transition-transform"></i>
-                                        </summary>
-                                        <div class="mt-2 flex flex-wrap gap-2">
-                                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Motor Relearning</span>
-                                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">CIMT</span>
-                                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Aynalı Terapi</span>
-                                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Robotik</span>
-                                        </div>
-                                    </details>
-                                </div>
-                            </div>
-
-                            <!-- Parkinson with Severity Scale -->
-                            <div class="disease-card bg-blue-50 p-6 rounded-2xl border-l-4 border-neuro">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-neuro rounded-full flex items-center justify-center text-white mr-4">
-                                        <i class="fas fa-person-walking"></i>
-                                    </div>
-                                    <h4 class="font-bold text-xl text-gray-900">Parkinson Hastalığı</h4>
-                                </div>
-                                
-                                <!-- Severity Visualization -->
-                                <div class="bg-white p-4 rounded-lg mb-4">
-                                    <div class="flex justify-between text-xs mb-2">
-                                        <span>Hafif</span>
-                                        <span>Şiddetli</span>
-                                    </div>
-                                    <div class="h-4 bg-gray-200 rounded-full overflow-hidden">
-                                        <div class="h-full bg-gradient-to-r from-green-400 via-yellow-400 to-red-500 w-3/4"></div>
-                                    </div>
-                                    <div class="flex justify-between mt-2 text-xs text-gray-600">
-                                        <div class="text-center">
-                                            <div class="w-3 h-3 bg-green-400 rounded-full mx-auto mb-1"></div>
-                                            <span>Stage 1-2</span>
-                                        </div>
-                                        <div class="text-center">
-                                            <div class="w-3 h-3 bg-yellow-400 rounded-full mx-auto mb-1"></div>
-                                            <span>Stage 3</span>
-                                        </div>
-                                        <div class="text-center">
-                                            <div class="w-3 h-3 bg-red-500 rounded-full mx-auto mb-1"></div>
-                                            <span>Stage 4-5</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="space-y-3">
-                                    <details class="group">
-                                        <summary class="flex items-center justify-between cursor-pointer bg-white p-3 rounded-lg hover:bg-blue-50 transition-colors">
-                                            <span class="font-semibold text-neuro">Değerlendirme</span>
-                                            <i class="fas fa-chevron-down transform group-open:rotate-180 transition-transform"></i>
-                                        </summary>
-                                        <ul class="mt-2 space-y-1 text-sm text-gray-700 pl-4">
-                                            <li class="assessment-item">UPDRS (Unified Parkinson's Scale)</li>
-                                            <li class="assessment-item">Schwab-England ADL Scale</li>
-                                            <li class="assessment-item">Timed Up and Go</li>
-                                        </ul>
-                                    </details>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Nörolojik Değerlendirme Wheel -->
-                        <div class="mt-8 bg-gray-50 p-6 rounded-2xl">
-                            <h4 class="font-bold text-lg text-gray-900 mb-4 text-center">Nörolojik Değerlendirme Çarkı</h4>
-                            <div class="flex justify-center">
-                                <svg viewBox="0 0 300 300" class="w-64 h-64">
-                                    <!-- Outer Ring -->
-                                    <circle cx="150" cy="150" r="140" fill="none" stroke="#E5E7EB" stroke-width="20"/>
-                                    
-                                    <!-- Segments -->
-                                    <path d="M150,150 L150,10 A140,140 0 0,1 290,150 Z" fill="#3B82F6" opacity="0.8"/>
-                                    <path d="M150,150 L290,150 A140,140 0 0,1 150,290 Z" fill="#10B981" opacity="0.8"/>
-                                    <path d="M150,150 L150,290 A140,140 0 0,1 10,150 Z" fill="#F59E0B" opacity="0.8"/>
-                                    <path d="M150,150 L10,150 A140,140 0 0,1 150,10 Z" fill="#8B5CF6" opacity="0.8"/>
-                                    
-                                    <!-- Labels -->
-                                    <text x="220" y="80" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Motor</text>
-                                    <text x="220" y="220" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Bilişsel</text>
-                                    <text x="80" y="220" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Duyusal</text>
-                                    <text x="80" y="80" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Fonksiyonel</text>
-                                    
-                                    <!-- Center -->
-                                    <circle cx="150" cy="150" r="40" fill="white" stroke="#2D5A4A" stroke-width="3"/>
-                                    <text x="150" y="145" text-anchor="middle" fill="#2D5A4A" font-size="12" font-weight="bold">NÖRO</text>
-                                    <text x="150" y="160" text-anchor="middle" fill="#2D5A4A" font-size="10">ET</text>
-                                </svg>
-                            </div>
-                            <p class="text-center text-sm text-gray-600 mt-4">Bütüncül nörolojik değerlendirme dört ana bileşeni içerir</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pediatrik Content with Growth Chart -->
-            <div id="pediatri" class="tab-content">
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-pediatric to-orange-600 p-8 text-white relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20"></div>
-                        <div class="relative z-10 flex items-center">
-                            <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mr-6">
-                                <i class="fas fa-child text-4xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-serif text-3xl font-bold mb-2">Pediatrik Ergoterapi</h3>
-                                <p class="opacity-90">Gelişimsel bozukluklarda erken müdahale ve aile merkezli terapi</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="p-8">
-                        <!-- Development Timeline -->
-                        <div class="mb-8 bg-orange-50 p-6 rounded-2xl">
-                            <h4 class="font-bold text-gray-900 mb-4 text-center">Gelişimsel Milatlar ve Ergoterapi Müdahalesi</h4>
-                            <div class="relative">
-                                <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-orange-200"></div>
-                                
-                                <div class="space-y-6">
-                                    <div class="flex items-center justify-between">
-                                        <div class="w-5/12 text-right pr-8">
-                                            <div class="bg-white p-3 rounded-lg shadow-sm">
-                                                <h5 class="font-bold text-pediatric">0-12 Ay</h5>
-                                                <p class="text-sm text-gray-600">Duyu-motor entegrasyon, tummy time</p>
-                                            </div>
-                                        </div>
-                                        <div class="w-2/12 flex justify-center">
-                                            <div class="w-8 h-8 bg-pediatric rounded-full border-4 border-white shadow-lg z-10"></div>
-                                        </div>
-                                        <div class="w-5/12"></div>
-                                    </div>
-                                    
-                                    <div class="flex items-center justify-between">
-                                        <div class="w-5/12"></div>
-                                        <div class="w-2/12 flex justify-center">
-                                            <div class="w-8 h-8 bg-pediatric rounded-full border-4 border-white shadow-lg z-10"></div>
-                                        </div>
-                                        <div class="w-5/12 pl-8">
-                                            <div class="bg-white p-3 rounded-lg shadow-sm">
-                                                <h5 class="font-bold text-pediatric">1-3 Yaş</h5>
-                                                <p class="text-sm text-gray-600">Oyun becerileri, ince motor, dil</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-center justify-between">
-                                        <div class="w-5/12 text-right pr-8">
-                                            <div class="bg-white p-3 rounded-lg shadow-sm">
-                                                <h5 class="font-bold text-pediatric">3-6 Yaş</h5>
-                                                <p class="text-sm text-gray-600">Okul öncesi beceriler, sosyal oyun</p>
-                                            </div>
-                                        </div>
-                                        <div class="w-2/12 flex justify-center">
-                                            <div class="w-8 h-8 bg-pediatric rounded-full border-4 border-white shadow-lg z-10"></div>
-                                        </div>
-                                        <div class="w-5/12"></div>
-                                    </div>
-                                    
-                                    <div class="flex items-center justify-between">
-                                        <div class="w-5/12"></div>
-                                        <div class="w-2/12 flex justify-center">
-                                            <div class="w-8 h-8 bg-pediatric rounded-full border-4 border-white shadow-lg z-10"></div>
-                                        </div>
-                                        <div class="w-5/12 pl-8">
-                                            <div class="bg-white p-3 rounded-lg shadow-sm">
-                                                <h5 class="font-bold text-pediatric">6+ Yaş</h5>
-                                                <p class="text-sm text-gray-600">Akademik beceriler, bağımsızlık</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <!-- Otizm -->
-                            <div class="disease-card bg-orange-50 p-6 rounded-2xl border-l-4 border-pediatric">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-pediatric rounded-full flex items-center justify-center text-white mr-4">
-                                        <i class="fas fa-puzzle-piece"></i>
-                                    </div>
-                                    <h4 class="font-bold text-xl text-gray-900">Otizm Spektrum Bozukluğu</h4>
-                                </div>
-                                
-                                <!-- Sensory Profile Visualization -->
-                                <div class="bg-white p-4 rounded-lg mb-4">
-                                    <h5 class="text-sm font-semibold text-center mb-3">Duyu Profili Örneği</h5>
-                                    <div class="space-y-2">
-                                        <div class="flex items-center">
-                                            <span class="w-20 text-xs">Görsel</span>
-                                            <div class="flex-1 h-3 bg-gray-200 rounded-full mx-2">
-                                                <div class="h-full bg-red-400 rounded-full" style="width: 80%"></div>
-                                            </div>
-                                            <span class="text-xs text-red-600">Aşırı</span>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <span class="w-20 text-xs">İşitsel</span>
-                                            <div class="flex-1 h-3 bg-gray-200 rounded-full mx-2">
-                                                <div class="h-full bg-red-400 rounded-full" style="width: 90%"></div>
-                                            </div>
-                                            <span class="text-xs text-red-600">Aşırı</span>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <span class="w-20 text-xs">Dokunsal</span>
-                                            <div class="flex-1 h-3 bg-gray-200 rounded-full mx-2">
-                                                <div class="h-full bg-yellow-400 rounded-full" style="width: 50%"></div>
-                                            </div>
-                                            <span class="text-xs text-yellow-600">Normal</span>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <span class="w-20 text-xs">Vestibüler</span>
-                                            <div class="flex-1 h-3 bg-gray-200 rounded-full mx-2">
-                                                <div class="h-full bg-blue-400 rounded-full" style="width: 30%"></div>
-                                            </div>
-                                            <span class="text-xs text-blue-600">Düşük</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <details class="group">
-                                    <summary class="flex items-center justify-between cursor-pointer bg-white p-3 rounded-lg hover:bg-orange-50 transition-colors">
-                                        <span class="font-semibold text-pediatric">Değerlendirme ve Müdahale</span>
-                                        <i class="fas fa-chevron-down transform group-open:rotate-180 transition-transform"></i>
-                                    </summary>
-                                    <div class="mt-2 text-sm text-gray-700 pl-4">
-                                        <p class="mb-2"><strong>Değerlendirme:</strong> Sensory Profile 2, SPM, PEP-3, Vineland</p>
-                                        <p><strong>Müdahale:</strong> Sensory Integration, DIR/Floortime, SCERTS, Görsel Destekler</p>
-                                    </div>
-                                </details>
-                            </div>
-
-                            <!-- Serebral Palsi -->
-                            <div class="disease-card bg-orange-50 p-6 rounded-2xl border-l-4 border-pediatric">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-pediatric rounded-full flex items-center justify-center text-white mr-4">
-                                        <i class="fas fa-baby"></i>
-                                    </div>
-                                    <h4 class="font-bold text-xl text-gray-900">Serebral Palsi</h4>
-                                </div>
-                                
-                                <!-- GMFCS Levels -->
-                                <div class="bg-white p-4 rounded-lg mb-4">
-                                    <h5 class="text-sm font-semibold text-center mb-3">GMFCS Seviyeleri</h5>
-                                    <div class="grid grid-cols-5 gap-1 text-center text-xs">
-                                        <div class="bg-green-100 p-2 rounded">
-                                            <div class="font-bold text-green-700">I</div>
-                                            <div class="text-green-600">Yürür</div>
-                                        </div>
-                                        <div class="bg-green-200 p-2 rounded">
-                                            <div class="font-bold text-green-700">II</div>
-                                            <div class="text-green-600">Yürür</div>
-                                        </div>
-                                        <div class="bg-yellow-100 p-2 rounded">
-                                            <div class="font-bold text-yellow-700">III</div>
-                                            <div class="text-yellow-600">Yürür</div>
-                                        </div>
-                                        <div class="bg-orange-100 p-2 rounded">
-                                            <div class="font-bold text-orange-700">IV</div>
-                                            <div class="text-orange-600">Tekerlekli</div>
-                                        </div>
-                                        <div class="bg-red-100 p-2 rounded">
-                                            <div class="font-bold text-red-700">V</div>
-                                            <div class="text-red-600">Tekerlekli</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <details class="group">
-                                    <summary class="flex items-center justify-between cursor-pointer bg-white p-3 rounded-lg hover:bg-orange-50 transition-colors">
-                                        <span class="font-semibold text-pediatric">Değerlendirme ve Müdahale</span>
-                                        <i class="fas fa-chevron-down transform group-open:rotate-180 transition-transform"></i>
-                                    </summary>
-                                    <div class="mt-2 text-sm text-gray-700 pl-4">
-                                        <p class="mb-2"><strong>Değerlendirme:</strong> GMFCS, MACS, CFCS, QUEST</p>
-                                        <p><strong>Müdahale:</strong> NDT/Bobath, CIMT, Bimanuel Eğitim, Goal-Directed Training</p>
-                                    </div>
-                                </details>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mental Sağlık Content with Mood Meter -->
-            <div id="mental" class="tab-content">
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-mental to-purple-700 p-8 text-white relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20"></div>
-                        <div class="relative z-10 flex items-center">
-                            <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mr-6">
-                                <i class="fas fa-heart text-4xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-serif text-3xl font-bold mb-2">Mental Sağlık ve Psikososyal Rehabilitasyon</h3>
-                                <p class="opacity-90">Psikiyatrik durumlarda işlevsellik ve toplumsal katılım</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="p-8">
-                        <!-- Mood Meter -->
-                        <div class="mb-8 bg-purple-50 p-6 rounded-2xl">
-                            <h4 class="font-bold text-gray-900 mb-4 text-center">Duygu Durumu ve Enerji Düzeyi Matrisi</h4>
-                            <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
-                                <div class="bg-yellow-100 p-4 rounded-xl text-center border-2 border-yellow-300">
-                                    <div class="text-2xl mb-2">😊</div>
-                                    <div class="font-bold text-yellow-800">Yüksek Enerji</div>
-                                    <div class="text-sm text-yellow-700">Pozitif</div>
-                                    <div class="text-xs text-yellow-600 mt-1">Hedef: Aktivite planlama</div>
-                                </div>
-                                <div class="bg-red-100 p-4 rounded-xl text-center border-2 border-red-300">
-                                    <div class="text-2xl mb-2">😰</div>
-                                    <div class="font-bold text-red-800">Yüksek Enerji</div>
-                                    <div class="text-sm text-red-700">Negatif</div>
-                                    <div class="text-xs text-red-600 mt-1">Hedef: Düzenleme stratejileri</div>
-                                </div>
-                                <div class="bg-green-100 p-4 rounded-xl text-center border-2 border-green-300">
-                                    <div class="text-2xl mb-2">😌</div>
-                                    <div class="font-bold text-green-800">Düşük Enerji</div>
-                                    <div class="text-sm text-green-700">Pozitif</div>
-                                    <div class="text-xs text-green-600 mt-1">Hedef: Sakinleştirme</div>
-                                </div>
-                                <div class="bg-blue-100 p-4 rounded-xl text-center border-2 border-blue-300">
-                                    <div class="text-2xl mb-2">😔</div>
-                                    <div class="font-bold text-blue-800">Düşük Enerji</div>
-                                    <div class="text-sm text-blue-700">Negatif</div>
-                                    <div class="text-xs text-blue-600 mt-1">Hedef: Behavioral activation</div>
-                                </div>
-                            </div>
-                            <p class="text-center text-sm text-gray-600 mt-4">Ergoterapistler duygu durumuna göre aktivite seçimi yapar</p>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <!-- Depresyon -->
-                            <div class="disease-card bg-purple-50 p-6 rounded-2xl border-l-4 border-mental">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-mental rounded-full flex items-center justify-center text-white mr-4">
-                                        <i class="fas fa-cloud-rain"></i>
-                                    </div>
-                                    <h4 class="font-bold text-xl text-gray-900">Depresyon</h4>
-                                </div>
-                                
-                                <!-- Activity Cycle -->
-                                <div class="bg-white p-4 rounded-lg mb-4">
-                                    <svg viewBox="0 0 200 100" class="w-full h-32">
-                                        <!-- Cycle diagram -->
-                                        <path d="M20,80 Q50,20 100,50 T180,80" fill="none" stroke="#8B5CF6" stroke-width="3" stroke-dasharray="5,5"/>
-                                        <circle cx="20" cy="80" r="8" fill="#EF4444"/>
-                                        <text x="20" y="95" text-anchor="middle" font-size="10" fill="#EF4444">Düşük</text>
-                                        
-                                        <circle cx="100" cy="35" r="8" fill="#F59E0B"/>
-                                        <text x="100" y="25" text-anchor="middle" font-size="10" fill="#F59E0B">Müdahale</text>
-                                        
-                                        <circle cx="180" cy="80" r="8" fill="#10B981"/>
-                                        <text x="180" y="95" text-anchor="middle" font-size="10" fill="#10B981">İyileşme</text>
-                                        
-                                        <text x="100" y="70" text-anchor="middle" font-size="11" fill="#6B7280">Aktivite Başlangıç → Zevk → Tekrar</text>
-                                    </svg>
-                                </div>
-                                
-                                <p class="text-sm text-gray-600 mb-3">Behavioral Activation: Anhedoni ile mücadelede anlamlı aktiviteler</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">Activity Scheduling</span>
-                                    <span class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">Graded Task</span>
-                                    <span class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">Social Skills</span>
-                                </div>
-                            </div>
-
-                            <!-- Şizofreni -->
-                            <div class="disease-card bg-purple-50 p-6 rounded-2xl border-l-4 border-mental">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-mental rounded-full flex items-center justify-center text-white mr-4">
-                                        <i class="fas fa-brain"></i>
-                                    </div>
-                                    <h4 class="font-bold text-xl text-gray-900">Şizofreni</h4>
-                                </div>
-                                
-                                <!-- Cognitive Remediation Visual -->
-                                <div class="bg-white p-4 rounded-lg mb-4">
-                                    <div class="flex justify-between items-end h-24 space-x-2">
-                                        <div class="w-1/5 bg-gray-200 rounded-t" style="height: 30%"></div>
-                                        <div class="w-1/5 bg-gray-300 rounded-t" style="height: 45%"></div>
-                                        <div class="w-1/5 bg-purple-300 rounded-t" style="height: 60%"></div>
-                                        <div class="w-1/5 bg-purple-400 rounded-t" style="height: 75%"></div>
-                                        <div class="w-1/5 bg-purple-500 rounded-t" style="height: 90%"></div>
-                                    </div>
-                                    <p class="text-xs text-center text-gray-600 mt-2">Bilişsel Rehabilitasyon İlerlemesi</p>
-                                </div>
-                                
-                                <p class="text-sm text-gray-600 mb-3">Sosyal biliş eğitimi, destekli istihdam, bağımsız yaşam</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">Cognitive Remediation</span>
-                                    <span class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">Supported Employment</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ortopedik Content with Hand Anatomy -->
-            <div id="ortopedi" class="tab-content">
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-ortho to-pink-600 p-8 text-white relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20"></div>
-                        <div class="relative z-10 flex items-center">
-                            <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mr-6">
-                                <i class="fas fa-hand text-4xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-serif text-3xl font-bold mb-2">Ortopedik Rehabilitasyon ve El Cerrahisi</h3>
-                                <p class="opacity-90">Üst ekstremite yaralanmalarında fonksiyon ve incelik hareketleri</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="p-8">
-                        <!-- Hand Anatomy SVG -->
-                        <div class="mb-8 bg-pink-50 p-6 rounded-2xl">
-                            <h4 class="font-bold text-gray-900 mb-4 text-center">El Bileşenleri ve Değerlendirme</h4>
-                            <div class="flex justify-center">
-                                <svg viewBox="0 0 200 150" class="w-full max-w-md">
-                                    <!-- Hand outline -->
-                                    <path d="M40,120 L40,80 Q40,60 60,60 L70,60 L70,40 Q70,20 80,20 Q90,20 90,40 L90,60 L100,60 L100,30 Q100,10 110,10 Q120,10 120,30 L120,60 L130,60 L130,40 Q130,20 140,20 Q150,20 150,40 L150,60 L160,60 Q180,60 180,80 L180,120 Q180,140 160,140 L60,140 Q40,140 40,120" 
-                                          fill="none" stroke="#EC4899" stroke-width="2"/>
-                                    
-                                    <!-- Zones -->
-                                    <circle cx="70" cy="50" r="8" fill="#FEF3C7" opacity="0.7"/>
-                                    <text x="70" y="54" text-anchor="middle" font-size="8">T</text>
-                                    
-                                    <circle cx="110" cy="40" r="8" fill="#FEF3C7" opacity="0.7"/>
-                                    <text x="110" y="44" text-anchor="middle" font-size="8">İ</text>
-                                    
-                                    <circle cx="140" cy="50" r="8" fill="#FEF3C7" opacity="0.7"/>
-                                    <text x="140" y="54" text-anchor="middle" font-size="8">O</text>
-                                    
-                                    <circle cx="160" cy="80" r="8" fill="#FEF3C7" opacity="0.7"/>
-                                    <text x="160" y="84" text-anchor="middle" font-size="8">S</text>
-                                    
-                                    <!-- Wrist -->
-                                    <rect x="35" y="120" width="150" height="20" fill="none" stroke="#10B981" stroke-width="2" rx="5"/>
-                                    <text x="110" y="133" text-anchor="middle" font-size="10" fill="#10B981">Bilek</text>
-                                </svg>
-                            </div>
-                            <div class="grid grid-cols-4 gap-2 mt-4 text-center text-xs">
-                                <div class="bg-yellow-100 p-2 rounded">T: Baş parmak</div>
-                                <div class="bg-yellow-100 p-2 rounded">İ: İşaret</div>
-                                <div class="bg-yellow-100 p-2 rounded">O: Orta</div>
-                                <div class="bg-yellow-100 p-2 rounded">S: Serçe/Yüzük</div>
-                            </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <!-- Karpal Tünel -->
-                            <div class="disease-card bg-pink-50 p-6 rounded-2xl border-l-4 border-ortho">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-ortho rounded-full flex items-center justify-center text-white mr-4">
-                                        <i class="fas fa-hand-dots"></i>
-                                    </div>
-                                    <h4 class="font-bold text-xl text-gray-900">Karpal Tünel Sendromu</h4>
-                                </div>
-                                
-                                <!-- Nerve Conduction Visual -->
-                                <div class="bg-white p-4 rounded-lg mb-4">
-                                    <div class="relative h-20 bg-gray-100 rounded-lg overflow-hidden">
-                                        <div class="absolute inset-0 flex items-center justify-center">
-                                            <div class="w-full h-2 bg-gray-300"></div>
-                                        </div>
-                                        <div class="absolute left-0 top-0 bottom-0 w-1/3 bg-yellow-200 flex items-center justify-center">
-                                            <span class="text-xs font-bold text-yellow-800">Hafif</span>
-                                        </div>
-                                        <div class="absolute left-1/3 top-0 bottom-0 w-1/3 bg-orange-200 flex items-center justify-center">
-                                            <span class="text-xs font-bold text-orange-800">Orta</span>
-                                        </div>
-                                        <div class="absolute right-0 top-0 bottom-0 w-1/3 bg-red-200 flex items-center justify-center">
-                                            <span class="text-xs font-bold text-red-800">Şiddetli</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-center text-gray-600 mt-2">Nöropati Şiddeti ve Müdahale</p>
-                                </div>
-                                
-                                <ul class="space-y-1 text-sm text-gray-700">
-                                    <li class="assessment-item">Phalen Test, Tinel Sign</li>
-                                    <li class="assessment-item">NCS (Nerve Conduction Study)</li>
-                                    <li class="assessment-item">DASH Questionnaire</li>
-                                    <li class="assessment-item">Semmes-Weinstein Monofilament</li>
-                                </ul>
-                            </div>
-
-                            <!-- Tendon Yaralanmaları -->
-                            <div class="disease-card bg-pink-50 p-6 rounded-2xl border-l-4 border-ortho">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-ortho rounded-full flex items-center justify-center text-white mr-4">
-                                        <i class="fas fa-bandage"></i>
-                                    </div>
-                                    <h4 class="font-bold text-xl text-gray-900">Tendon Yaralanmaları</h4>
-                                </div>
-                                
-                                <!-- Healing Timeline -->
-                                <div class="bg-white p-4 rounded-lg mb-4">
-                                    <div class="flex justify-between items-center text-xs">
-                                        <div class="text-center">
-                                            <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mb-1">1</div>
-                                            <div>Koruma</div>
-                                        </div>
-                                        <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
-                                        <div class="text-center">
-                                            <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-1">2</div>
-                                            <div>Pasif</div>
-                                        </div>
-                                        <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
-                                        <div class="text-center">
-                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mb-1">3</div>
-                                            <div>Aktif</div>
-                                        </div>
-                                        <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
-                                        <div class="text-center">
-                                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-1">4</div>
-                                            <div>Güç</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <p class="text-sm text-gray-600">Kleinert protokolü, tendon gliding, ödem kontrolü</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Geriatri Content with Fall Risk Assessment -->
-            <div id="geriatri" class="tab-content">
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-geri to-emerald-600 p-8 text-white relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20"></div>
-                        <div class="relative z-10 flex items-center">
-                            <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mr-6">
-                                <i class="fas fa-user-clock text-4xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-serif text-3xl font-bold mb-2">Geriatrik Ergoterapi</h3>
-                                <p class="opacity-90">Yaşlanma ile birlikte gelen fonksiyonel değişimler ve demans yönetimi</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="p-8">
-                        <!-- Fall Risk Radar Chart -->
-                        <div class="mb-8 bg-emerald-50 p-6 rounded-2xl">
-                            <h4 class="font-bold text-gray-900 mb-4 text-center">Düşme Riski Faktörleri</h4>
-                            <div class="flex justify-center">
-                                <canvas id="fallRiskChart" width="300" height="300"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <!-- Demans -->
-                            <div class="disease-card bg-emerald-50 p-6 rounded-2xl border-l-4 border-geri">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-geri rounded-full flex items-center justify-center text-white mr-4">
-                                        <i class="fas fa-brain"></i>
-                                    </div>
-                                    <h4 class="font-bold text-xl text-gray-900">Alzheimer ve Demans</h4>
-                                </div>
-                                
-                                <!-- GDS Stages -->
-                                <div class="bg-white p-4 rounded-lg mb-4">
-                                    <h5 class="text-sm font-semibold mb-3">Global Deterioration Scale</h5>
-                                    <div class="space-y-2">
-                                        <div class="flex items-center">
-                                            <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center text-white text-xs font-bold mr-3">1-2</div>
-                                            <div class="flex-1">
-                                                <div class="h-2 bg-green-200 rounded-full">
-                                                    <div class="h-full bg-green-400 rounded-full" style="width: 20%"></div>
-                                                </div>
-                                            </div>
-                                            <span class="ml-2 text-xs">Hafif</span>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <div class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-white text-xs font-bold mr-3">3-4</div>
-                                            <div class="flex-1">
-                                                <div class="h-2 bg-yellow-200 rounded-full">
-                                                    <div class="h-full bg-yellow-400 rounded-full" style="width: 50%"></div>
-                                                </div>
-                                            </div>
-                                            <span class="ml-2 text-xs">Orta</span>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <div class="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center text-white text-xs font-bold mr-3">5-7</div>
-                                            <div class="flex-1">
-                                                <div class="h-2 bg-red-200 rounded-full">
-                                                    <div class="h-full bg-red-400 rounded-full" style="width: 90%"></div>
-                                                </div>
-                                            </div>
-                                            <span class="ml-2 text-xs">İleri</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <p class="text-sm text-gray-600">Reality orientation, reminiscence therapy, Montessori aktiviteleri</p>
-                            </div>
-
-                            <!-- Düşme Önleme -->
-                            <div class="disease-card bg-emerald-50 p-6 rounded-2xl border-l-4 border-geri">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-geri rounded-full flex items-center justify-center text-white mr-4">
-                                        <i class="fas fa-shield-heart"></i>
-                                    </div>
-                                    <h4 class="font-bold text-xl text-gray-900">Düşme Önleme</h4>
-                                </div>
-                                
-                                <!-- Home Safety Checklist -->
-                                <div class="bg-white p-4 rounded-lg mb-4">
-                                    <h5 class="text-sm font-semibold mb-3">Ev Güvenlik Kontrol Listesi</h5>
-                                    <div class="grid grid-cols-2 gap-2 text-xs">
-                                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-1"></i> Aydınlatma</div>
-                                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-1"></i> Kaymaz zemin</div>
-                                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-1"></i> Tutunma barları</div>
-                                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-1"></i> Halı kenarları</div>
-                                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-1"></i> Merdiven rayları</div>
-                                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-1"></i> Banyo düzenlemesi</div>
-                                    </div>
-                                </div>
-                                
-                                <p class="text-sm text-gray-600">Berg Balance Scale, Timed Up and Go, ev güvenlik denetimi</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Assessment Framework -->
-    <section id="degerlendirme" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16 scroll-reveal">
-                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-6">Ergoterapi Değerlendirme Çerçevesi</h2>
-                <div class="w-24 h-1 bg-therapy-green mx-auto rounded-full mb-6"></div>
-                <p class="text-xl text-gray-600">Kapsamlı değerlendirme süreci ve kullanılan standart ölçekler</p>
-            </div>
-
-            <!-- Interactive Process Diagram -->
-            <div class="bg-gradient-to-br from-therapy-green to-therapy-dark rounded-3xl p-8 text-white mb-12 relative overflow-hidden">
-                <div class="absolute inset-0 opacity-10">
-                    <svg width="100%" height="100%">
-                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
-                        </pattern>
-                        <rect width="100%" height="100%" fill="url(#grid)"/>
+                        <!-- Sağ Lob -->
+                        <circle cx="160" cy="80" r="35" fill="none" stroke="#8B5CF6" stroke-width="2" style="animation: pulse 2s ease-in-out 0.5s infinite;"/>
+                        <text x="160" y="85" text-anchor="middle" class="text-xs font-bold fill-purple-700">Görsel</text>
+                        
+                        <!-- Ön Lob (Motor) -->
+                        <circle cx="120" cy="50" r="30" fill="none" stroke="#8B5CF6" stroke-width="2" style="animation: pulse 2s ease-in-out 1s infinite;"/>
+                        <text x="120" y="55" text-anchor="middle" class="text-xs font-bold fill-purple-700">Motor</text>
+                        
+                        <!-- Arka Lob (Hafıza) -->
+                        <circle cx="120" cy="140" r="30" fill="none" stroke="#8B5CF6" stroke-width="2" style="animation: pulse 2s ease-in-out 1.5s infinite;"/>
+                        <text x="120" y="145" text-anchor="middle" class="text-xs font-bold fill-purple-700">Hafıza</text>
                     </svg>
                 </div>
-                
-                <div class="relative z-10 grid md:grid-cols-4 gap-6">
-                    <!-- Step 1 -->
-                    <div class="bg-white/10 backdrop-blur rounded-2xl p-6 text-center transform hover:scale-105 transition-transform">
-                        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                            <i class="fas fa-comments"></i>
-                        </div>
-                        <h3 class="font-bold text-lg mb-2">1. Hikaye Alma</h3>
-                        <ul class="text-sm text-white/80 text-left space-y-1">
-                            <li>• COPM</li>
-                            <li>• Occupational History</li>
-                            <li>• Interest Checklist</li>
-                            <li>• Aile görüşmesi</li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Arrow -->
-                    <div class="hidden md:flex items-center justify-center">
-                        <i class="fas fa-arrow-right text-4xl text-white/50"></i>
-                    </div>
-                    
-                    <!-- Step 2 -->
-                    <div class="bg-white/10 backdrop-blur rounded-2xl p-6 text-center transform hover:scale-105 transition-transform">
-                        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                            <i class="fas fa-stethoscope"></i>
-                        </div>
-                        <h3 class="font-bold text-lg mb-2">2. Fonksiyonel Analiz</h3>
-                        <ul class="text-sm text-white/80 text-left space-y-1">
-                            <li>• Barthel Index</li>
-                            <li>• Lawton IADL</li>
-                            <li>• FIM</li>
-                            <li>• AMPS</li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Arrow -->
-                    <div class="hidden md:flex items-center justify-center">
-                        <i class="fas fa-arrow-right text-4xl text-white/50"></i>
-                    </div>
-                    
-                    <!-- Step 3 -->
-                    <div class="bg-white/10 backdrop-blur rounded-2xl p-6 text-center transform hover:scale-105 transition-transform">
-                        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                            <i class="fas fa-microscope"></i>
-                        </div>
-                        <h3 class="font-bold text-lg mb-2">3. Bileşen Değerlendirmesi</h3>
-                        <ul class="text-sm text-white/80 text-left space-y-1">
-                            <li>• ROM, MMT</li>
-                            <li>• Duyu testleri</li>
-                            <li>• Bilişsel testler</li>
-                            <li>• Algı testleri</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- Bottom Row -->
-                <div class="mt-6 flex justify-center">
-                    <div class="bg-white/10 backdrop-blur rounded-2xl p-6 text-center max-w-md transform hover:scale-105 transition-transform">
-                        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                            <i class="fas fa-home"></i>
-                        </div>
-                        <h3 class="font-bold text-lg mb-2">4. Çevre ve Bağlam</h3>
-                        <ul class="text-sm text-white/80 text-left space-y-1">
-                            <li>• Home Assessment</li>
-                            <li>• Work Site Analysis</li>
-                            <li>• School Function Assessment</li>
-                            <li>• Assistive Technology</li>
-                        </ul>
-                    </div>
+                <div class="space-y-3">
+                    <h4 class="font-bold text-lg text-gray-900">Beyin Bölgeleri Rehberi</h4>
+                    <p class="text-gray-600 text-sm">
+                        Beynin farklı bölgelerinin işlevlerini anlayın. Bilişsel rehabilitasyonda hedeflenen alanları görselleştirin.
+                    </p>
+                    <button class="w-full mt-4 px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors font-semibold">
+                        <i class="fas fa-play mr-2"></i>Animasyonu Oynat
+                    </button>
                 </div>
             </div>
 
-            <!-- Assessment Tools Database -->
-            <div class="bg-gray-50 rounded-3xl p-8">
-                <h3 class="font-bold text-2xl text-gray-900 mb-6 text-center">Sık Kullanılan Değerlendirme Araçları</h3>
-                
-                <div class="grid md:grid-cols-3 gap-6">
-                    <!-- Column 1 -->
-                    <div class="bg-white rounded-xl p-6 shadow-md">
-                        <h4 class="font-bold text-therapy-green mb-4 flex items-center">
-                            <i class="fas fa-brain mr-2"></i> Nörolojik
-                        </h4>
-                        <div class="space-y-3">
-                            <div class="p-3 bg-blue-50 rounded-lg">
-                                <div class="font-semibold text-sm">Fugl-Meyer Assessment</div>
-                                <div class="text-xs text-gray-600">Motor fonksiyon (İnme)</div>
-                            </div>
-                            <div class="p-3 bg-blue-50 rounded-lg">
-                                <div class="font-semibold text-sm">Berg Balance Scale</div>
-                                <div class="text-xs text-gray-600">Denge (Yaşlı, nöro)</div>
-                            </div>
-                            <div class="p-3 bg-blue-50 rounded-lg">
-                                <div class="font-semibold text-sm">MoCA</div>
-                                <div class="text-xs text-gray-600">Bilişsel tarama</div>
-                            </div>
-                        </div>
+            <!-- Animasyon 3: Hareket Dinamikleri -->
+            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-8 shadow-lg">
+                <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white mr-4">
+                        <i class="fas fa-person-walking text-2xl"></i>
                     </div>
-                    
-                    <!-- Column 2 -->
-                    <div class="bg-white rounded-xl p-6 shadow-md">
-                        <h4 class="font-bold text-pediatric mb-4 flex items-center">
-                            <i class="fas fa-child mr-2"></i> Pediatrik
-                        </h4>
-                        <div class="space-y-3">
-                            <div class="p-3 bg-yellow-50 rounded-lg">
-                                <div class="font-semibold text-sm">Sensory Profile 2</div>
-                                <div class="text-xs text-gray-600">Duyu işlemleme</div>
-                            </div>
-                            <div class="p-3 bg-yellow-50 rounded-lg">
-                                <div class="font-semibold text-sm">PDMS-2</div>
-                                <div class="text-xs text-gray-600">Motor gelişim</div>
-                            </div>
-                            <div class="p-3 bg-yellow-50 rounded-lg">
-                                <div class="font-semibold text-sm">COPM</div>
-                                <div class="text-xs text-gray-600">Performans öncelikleri</div>
-                            </div>
-                        </div>
+                    <h3 class="font-bold text-2xl text-gray-900">Hareket Dinamikleri</h3>
+                </div>
+                <div class="bg-white rounded-2xl p-8 mb-6 min-h-80 flex items-center justify-center overflow-hidden">
+                    <!-- SVG Animasyon: Yürüyüş -->
+                    <svg viewBox="0 0 200 300" class="w-full h-full max-w-56" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Başı -->
+                        <circle cx="100" cy="40" r="15" fill="#FFD1B8" stroke="#2D5A4A" stroke-width="2"/>
+                        
+                        <!-- Gövde -->
+                        <line x1="100" y1="55" x2="100" y2="110" stroke="#2D5A4A" stroke-width="3" stroke-linecap="round"/>
+                        
+                        <!-- Sol Kol (animasyon) -->
+                        <line x1="100" y1="65" x2="70" y2="95" stroke="#FFD1B8" stroke-width="3" stroke-linecap="round" style="animation: swing 1.5s ease-in-out infinite;"/>
+                        
+                        <!-- Sağ Kol (animasyon) -->
+                        <line x1="100" y1="65" x2="130" y2="85" stroke="#FFD1B8" stroke-width="3" stroke-linecap="round" style="animation: swing 1.5s ease-in-out 0.75s infinite reverse;"/>
+                        
+                        <!-- Sol Bacak (animasyon) -->
+                        <line x1="100" y1="110" x2="80" y2="170" stroke="#FFD1B8" stroke-width="3" stroke-linecap="round" style="animation: step 1.5s ease-in-out infinite;"/>
+                        
+                        <!-- Sağ Bacak (animasyon) -->
+                        <line x1="100" y1="110" x2="120" y2="170" stroke="#FFD1B8" stroke-width="3" stroke-linecap="round" style="animation: step 1.5s ease-in-out 0.75s infinite reverse;"/>
+                    </svg>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="font-bold text-lg text-gray-900">Hareket Dinamikleri</h4>
+                    <p class="text-gray-600 text-sm">
+                        Fiziksel terapide kullanılan hareket kalıplarını ve koordinasyonu görselleştirin. Yürüyüş ve dengeli hareket eğitimi.
+                    </p>
+                    <button class="w-full mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-semibold">
+                        <i class="fas fa-play mr-2"></i>Animasyonu Oynat
+                    </button>
+                </div>
+            </div>
+
+            <!-- Animasyon 4: Duyu Entegrasyonu -->
+            <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-3xl p-8 shadow-lg">
+                <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 bg-orange-500 rounded-full flex items-center justify-center text-white mr-4">
+                        <i class="fas fa-eye text-2xl"></i>
                     </div>
-                    
-                    <!-- Column 3 -->
-                    <div class="bg-white rounded-xl p-6 shadow-md">
-                        <h4 class="font-bold text-ortho mb-4 flex items-center">
-                            <i class="fas fa-hand mr-2"></i> Ortopedik / Genel
-                        </h4>
-                        <div class="space-y-3">
-                            <div class="p-3 bg-pink-50 rounded-lg">
-                                <div class="font-semibold text-sm">DASH / QuickDASH</div>
-                                <div class="text-xs text-gray-600">Üst ekstremite</div>
-                            </div>
-                            <div class="p-3 bg-pink-50 rounded-lg">
-                                <div class="font-semibold text-sm">Barthel Index</div>
-                                <div class="text-xs text-gray-600">Temel ADL</div>
-                            </div>
-                            <div class="p-3 bg-pink-50 rounded-lg">
-                                <div class="font-semibold text-sm">Visual Analog Scale</div>
-                                <div class="text-xs text-gray-600">Ağrı ölçümü</div>
-                            </div>
-                        </div>
-                    </div>
+                    <h3 class="font-bold text-2xl text-gray-900">Duyu Entegrasyonu</h3>
+                </div>
+                <div class="bg-white rounded-2xl p-8 mb-6 min-h-80 flex items-center justify-center overflow-hidden">
+                    <!-- SVG Animasyon: Duyu Ağları -->
+                    <svg viewBox="0 0 240 240" class="w-full h-full max-w-72" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Merkez Beyin -->
+                        <circle cx="120" cy="120" r="30" fill="#F59E0B" stroke="#D97706" stroke-width="2"/>
+                        
+                        <!-- Görsel Duyu -->
+                        <circle cx="190" cy="120" r="20" fill="#3B82F6" opacity="0.6" style="animation: pulse 2s ease-in-out infinite;"/>
+                        <line x1="150" y1="120" x2="170" y2="120" stroke="#3B82F6" stroke-width="2" style="animation: pulse 2s ease-in-out infinite;"/>
+                        <text x="210" y="125" class="text-xs fill-blue-700">Görsel</text>
+                        
+                        <!-- İşitsel Duyu -->
+                        <circle cx="50" cy="120" r="20" fill="#10B981" opacity="0.6" style="animation: pulse 2s ease-in-out 0.5s infinite;"/>
+                        <line x1="90" y1="120" x2="70" y2="120" stroke="#10B981" stroke-width="2" style="animation: pulse 2s ease-in-out 0.5s infinite;"/>
+                        <text x="10" y="125" class="text-xs fill-green-700">İşitsel</text>
+                        
+                        <!-- Dokunsal Duyu -->
+                        <circle cx="120" cy="50" r="20" fill="#EC4899" opacity="0.6" style="animation: pulse 2s ease-in-out 1s infinite;"/>
+                        <line x1="120" y1="90" x2="120" y2="70" stroke="#EC4899" stroke-width="2" style="animation: pulse 2s ease-in-out 1s infinite;"/>
+                        <text x="115" y="30" class="text-xs fill-pink-700">Dokunsal</text>
+                        
+                        <!-- Kinestetik Duyu -->
+                        <circle cx="120" cy="190" r="20" fill="#8B5CF6" opacity="0.6" style="animation: pulse 2s ease-in-out 1.5s infinite;"/>
+                        <line x1="120" y1="150" x2="120" y2="170" stroke="#8B5CF6" stroke-width="2" style="animation: pulse 2s ease-in-out 1.5s infinite;"/>
+                        <text x="100" y="215" class="text-xs fill-purple-700">Kinestetik</text>
+                    </svg>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="font-bold text-lg text-gray-900">Duyu Entegrasyon Terapisi</h4>
+                    <p class="text-gray-600 text-sm">
+                        Farklı duyu modalitelerinin beynin merkezi tarafından nasıl işlendiğini görselleştirin. Duyu bütünleme eğitimi.
+                    </p>
+                    <button class="w-full mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-semibold">
+                        <i class="fas fa-play mr-2"></i>Animasyonu Oynat
+                    </button>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Statistics Dashboard -->
-    <section class="py-20 bg-therapy-green text-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="font-serif text-3xl font-bold text-center mb-12">Ergoterapi Türkiye İstatistikleri</h2>
-            
-            <div class="grid md:grid-cols-4 gap-8 text-center">
-                <div class="bg-white/10 backdrop-blur rounded-2xl p-6">
-                    <canvas id="chart1" width="150" height="150" class="mx-auto mb-4"></canvas>
-                    <div class="text-3xl font-bold">40+</div>
-                    <div class="text-sm opacity-80">Üniversite Programı</div>
-                </div>
-                
-                <div class="bg-white/10 backdrop-blur rounded-2xl p-6">
-                    <canvas id="chart2" width="150" height="150" class="mx-auto mb-4"></canvas>
-                    <div class="text-3xl font-bold">5000+</div>
-                    <div class="text-sm opacity-80">Aktif Ergoterapist</div>
-                </div>
-                
-                <div class="bg-white/10 backdrop-blur rounded-2xl p-6">
-                    <canvas id="chart3" width="150" height="150" class="mx-auto mb-4"></canvas>
-                    <div class="text-3xl font-bold">200+</div>
-                    <div class="text-sm opacity-80">Kamu Hastanesi</div>
-                </div>
-                
-                <div class="bg-white/10 backdrop-blur rounded-2xl p-6">
-                    <canvas id="chart4" width="150" height="150" class="mx-auto mb-4"></canvas>
-                    <div class="text-3xl font-bold">30+</div>
-                    <div class="text-sm opacity-80">Yıllık Geçmiş</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- WhatsApp Section -->
-    <section class="py-16 bg-gradient-to-r from-whatsapp to-green-600 text-white">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <i class="fab fa-whatsapp text-6xl mb-4 animate-bounce"></i>
-            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">WhatsApp'tan Ulaşın</h2>
-            <p class="text-lg mb-8 opacity-90">Detaylı bilgi ve randevu için hemen yazın</p>
-            
-            <a href="https://wa.me/905067223289?text=Merhaba,%20ergoterapi%20hakkında%20bilgi%20almak%20istiyorum." 
-               target="_blank" 
-               class="inline-flex items-center space-x-3 bg-white text-whatsapp px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl">
-                <i class="fab fa-whatsapp text-2xl"></i>
-                <span>0506 722 32 89</span>
-                <i class="fas fa-arrow-right"></i>
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 bg-therapy-green rounded-full flex items-center justify-center">
-                            <i class="fas fa-hands-holding-circle text-xl"></i>
-                        </div>
-                        <span class="font-serif text-2xl font-bold">Ergoterapi<span class="text-therapy-accent">TR</span></span>
-                    </div>
-                    <p class="text-gray-400 text-sm">Türkiye'de ergoterapi mesleğinin tanıtımı ve gelişimi.</p>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold text-lg mb-4">Hızlı Bağlantılar</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#alanlar" class="hover:text-therapy-green transition-colors">Klinik Alanlar</a></li>
-                        <li><a href="#degerlendirme" class="hover:text-therapy-green transition-colors">Değerlendirme</a></li>
-                        <li><a href="oyunlar.html" class="hover:text-therapy-green transition-colors">Terapötik Oyunlar</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-lg mb-4">İletişim</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><i class="fas fa-envelope mr-2"></i> muratcoskun06@gmail.com</li>
-                        <li>
-                            <a href="https://wa.me/905067223289" target="_blank" class="flex items-center hover:text-whatsapp transition-colors">
-                                <i class="fab fa-whatsapp mr-2"></i> 0506 722 32 89
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold text-lg mb-4">Sosyal Medya</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-therapy-green transition-colors">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-therapy-green transition-colors">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-therapy-green transition-colors">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-                <p>&copy; 2024 Ergoterapi Türkiye. Tüm hakları saklıdır.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/905067223289?text=Merhaba,%20ergoterapi%20hakkında%20bilgi%20almak%20istiyorum." 
-       target="_blank" 
-       class="fixed bottom-6 right-6 w-14 h-14 bg-whatsapp rounded-full flex items-center justify-center text-white text-2xl shadow-2xl hover:scale-110 transition-transform z-50 animate-pulse-slow">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Mobile Menu Toggle
-        function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('translate-x-full');
-        }
-
-        // Smooth Scroll
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Tab Functionality
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('ring-4', 'ring-offset-2', 'ring-therapy-green');
-            });
-            
-            document.getElementById(tabName).classList.add('active');
-            event.currentTarget.classList.add('ring-4', 'ring-offset-2', 'ring-therapy-green');
-        }
-
-        // Scroll Reveal Animation
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
-
-        // Initialize Charts
-        document.addEventListener('DOMContentLoaded', function() {
-            // Stroke Recovery Chart
-            const strokeCtx = document.getElementById('strokeChart').getContext('2d');
-            new Chart(strokeCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Başlangıç', '1. Ay', '3. Ay', '6. Ay', '12. Ay'],
-                    datasets: [{
-                        label: 'Fugl-Meyer Skoru',
-                        data: [30, 45, 60, 75, 85],
-                        borderColor: '#3B82F6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, max: 100 }
-                    }
-                }
-            });
-
-            // Fall Risk Radar Chart
-            const fallCtx = document.getElementById('fallRiskChart').getContext('2d');
-            new Chart(fallCtx, {
-                type: 'radar',
-                data: {
-                    labels: ['Denge', 'Görüş', 'İlaçlar', 'Kas Gücü', 'Çevre', 'Bilişsel'],
-                    datasets: [{
-                        label: 'Risk Faktörleri',
-                        data: [85, 60, 70, 75, 90, 65],
-                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
-                        borderColor: '#10B981',
-                        pointBackgroundColor: '#10B981'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        r: {
-                            beginAtZero: true,
-                            max: 100
-                        }
-                    }
-                }
-            });
-
-            // Statistics Charts
-            const chartConfigs = [
-                { id: 'chart1', value: 40, color: '#60A5FA' },
-                { id: 'chart2', value: 75, color: '#34D399' },
-                { id: 'chart3', value: 60, color: '#FBBF24' },
-                { id: 'chart4', value: 85, color: '#F87171' }
-            ];
-
-            chartConfigs.forEach(config => {
-                const ctx = document.getElementById(config.id).getContext('2d');
-                new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        datasets: [{
-                            data: [config.value, 100 - config.value],
-                            backgroundColor: [config.color, 'rgba(255,255,255,0.1)'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        cutout: '70%',
-                        plugins: { legend: { display: false }, tooltip: { enabled: false } }
-                    }
-                });
-            });
-        });
-
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('shadow-lg');
-            } else {
-                navbar.classList.remove('shadow-lg');
-            }
-        });
-
-        // Visitor Counter - LocalStorage ile ziyaretçi sayacı
-        (function() {
-            const counterKey = 'visitorCount';
-            const lastVisitKey = 'lastVisit';
-            const today = new Date().toDateString();
-            const lastVisit = localStorage.getItem(lastVisitKey);
-            
-            // Sayacı al veya başlat
-            let count = parseInt(localStorage.getItem(counterKey)) || 0;
-            
-            // Bugün ilk ziyaretse sayacı artır
-            if (lastVisit !== today) {
-                count++;
-                localStorage.setItem(counterKey, count);
-                localStorage.setItem(lastVisitKey, today);
-            }
-            
-            // Göster
-            document.getElementById('visitorCount').textContent = count.toLocaleString('tr-TR');
-        })();
-    </script>
-</body>
-</html>
+<!-- CSS Animasyonlar (Head'e eklenecek) -->
+<style>
+    @keyframes wave {
+        0%, 100% { transform: rotateZ(0deg); transform-origin: 0 0; }
+        25% { transform: rotateZ(25deg); transform-origin: 0 0; }
+        50% { transform: rotateZ(0deg); transform-origin: 0 0; }
+    }
+    
+    @keyframes swing {
+        0%, 100% { transform: rotate(0deg); transform-origin: 100px 65px; }
+        50% { transform: rotate(45deg); transform-origin: 100px 65px; }
+    }
+    
+    @keyframes step {
+        0%, 100% { transform: translateY(0) rotateZ(-20deg); transform-origin: 100px 110px; }
+        25% { transform: translateY(-30px) rotateZ(-20deg); transform-origin: 100px 110px; }
+        50% { transform: translateY(0) rotateZ(20deg); transform-origin: 100px 110px; }
+        75% { transform: translateY(-20px) rotateZ(20deg); transform-origin: 100px 110px; }
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.6; r: 20px; }
+        50% { opacity: 1; r: 25px; }
+    }
+</style>
